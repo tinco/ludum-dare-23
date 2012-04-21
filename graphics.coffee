@@ -36,9 +36,7 @@ class Graphics
         # attach the render-supplied DOM element
         @container.append(@renderer.domElement)
         
-        pieces_per_row = 20
-        
-        
+    addToScene: (mesh) -> @scene.add(mesh)
 
     render: () ->
         @renderer.render(@scene, @camera)
@@ -51,17 +49,16 @@ class Graphics
 
         # the camera starts at 0,0,0
         # so pull it back
-        @camera.position.z = 300
+        @camera.position.z = 250
 
         # set up the sphere vars
-        radius = 50
-        segments = 1
-        rings = 1
+        radius = world_radius
+        segments = 16
+        rings = 16
 
-		#create the sphere's material
+        # create the sphere's material
         sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
-
-		
+        
         # create a new mesh with
         # sphere geometry - we will cover
         # the sphereMaterial next!
@@ -69,13 +66,9 @@ class Graphics
             new THREE.SphereGeometry(
                 radius,
                 segments,
-                rings,
-                1,
-                Math.PI/4,
-                1,
-                Math.PI/4),
+                rings),
                 sphereMaterial);
-
+        
         # add the sphere to the scene
         scene.add(sphere);
 
