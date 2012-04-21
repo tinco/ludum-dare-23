@@ -11,8 +11,7 @@ updateClass = (newClass) ->
     if window[newClass.name]
         for k,v of newClass.prototype
             if newClass.prototype.hasOwnProperty(k)
-                console.debug(newClass.name + ' new ' + k + ' v ' + v) if k == 'updateGraphics'
-                window[newClass.name][k] = v
+                window[newClass.name].prototype[k] = v
     else
         window[newClass.name] = newClass
 
