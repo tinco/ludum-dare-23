@@ -15,7 +15,7 @@ class Graphics
     viewAngle: 45
     speed: 1/10
     updateGraphics: ->
-        @sphere.position.setX(Math.sin(@frame * @speed) * 15)
+        #@sphere.position.setX(Math.sin(@frame * @speed) * 15)
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
@@ -34,6 +34,10 @@ class Graphics
 
         # attach the render-supplied DOM element
         @container.append(@renderer.domElement)
+        
+        pieces_per_row = 20
+        
+        
 
     render: () ->
         @renderer.render(@scene, @camera)
@@ -50,11 +54,10 @@ class Graphics
 
         # set up the sphere vars
         radius = 50
-        segments = 16
-        rings = 16
+        segments = 1
+        rings = 1
 
-		#create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
+		
 		
         # create a new mesh with
         # sphere geometry - we will cover
@@ -63,12 +66,19 @@ class Graphics
             new THREE.SphereGeometry(
                 radius,
                 segments,
-                rings),
+                rings,
+                1,
+                Math.PI/4,
+                1,
+                Math.PI/4),
                 sphereMaterial);
 
         # add the sphere to the scene
         scene.add(sphere);
 
+        #create the sphere's material
+        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
+        
         #create a point light
         pointLight = new THREE.PointLight(0xFFFFFF);
 

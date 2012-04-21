@@ -1,3 +1,4 @@
+Math.TAU = 2 * Math.PI
 class Game
     constructor: () ->
         @graphics = new Graphics()
