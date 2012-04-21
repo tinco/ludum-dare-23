@@ -45,6 +45,9 @@ class Graphics
         segments = 16
         rings = 16
 
+		#create the sphere's material
+        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
+		
         # create a new mesh with
         # sphere geometry - we will cover
         # the sphereMaterial next!
@@ -57,9 +60,6 @@ class Graphics
 
         # add the sphere to the scene
         scene.add(sphere);
-
-        #create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
 
         #create a point light
         pointLight = new THREE.PointLight(0xFFFFFF);
