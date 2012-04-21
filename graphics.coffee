@@ -1,75 +1,74 @@
-setupScene = ->
-    # set the scene size
-    WIDTH = 400
-    HEIGHT = 300
+class Graphics
+    constructor: () ->
+    start: () -> @loop()
+    loop: () ->
+        @renderer.render(@scene, @camera)
+        t = this
+        requestAnimationFrame(() -> t.loop())
+    viewport: {width: 400, height: 300}
+    focus: {near : 0.1, far : 10000}
+    viewAngle: 45
+    setup: () ->
+        # get the DOM element to attach to
+        # - assume we've got jQuery to hand
+        @container = $('#container')
 
-    # set some camera attributes
-    VIEW_ANGLE = 45
-    ASPECT = WIDTH / HEIGHT
-    NEAR = 0.1
-    FAR = 10000
+        # create a WebGL renderer, camera
+        # and a scene
+        @renderer = new THREE.WebGLRenderer()
+        @camera =
+            new THREE.PerspectiveCamera(
+                @viewAngle,
+                @viewport.width / @viewport.height,
+                @focus.near, @focus.far)
 
-    # get the DOM element to attach to
-    # - assume we've got jQuery to hand
-    $container = $('#container')
+        @renderer.setSize(@viewport.width, @viewport.height)
 
-    # create a WebGL renderer, camera
-    # and a scene
-    renderer = new THREE.WebGLRenderer()
-    camera =
-        new THREE.PerspectiveCamera(
-            VIEW_ANGLE,
-            ASPECT,
-            NEAR,
-            FAR)
+        # attach the render-supplied DOM element
+        @container.append(@renderer.domElement)
 
-    scene = new THREE.Scene()
+    render: () ->
+        @renderer.render(@scene, @camera)
 
-    # add the camera to the scene
-    scene.add(camera)
+    loadScene: () ->
+        scene = new THREE.Scene()
 
-    # the camera starts at 0,0,0
-    # so pull it back
-    camera.position.z = 300
+        # add the camera to the scene
+        scene.add(@camera)
 
-    # start the renderer
-    renderer.setSize(WIDTH, HEIGHT)
+        # the camera starts at 0,0,0
+        # so pull it back
+        @camera.position.z = 300
 
-    # attach the render-supplied DOM element
-    $container.append(renderer.domElement)
-    # set up the sphere vars
-    radius = 50
-    segments = 16
-    rings = 16
+        # set up the sphere vars
+        radius = 50
+        segments = 16
+        rings = 16
 
-    # create a new mesh with
-    # sphere geometry - we will cover
-    # the sphereMaterial next!
-    sphere = new THREE.Mesh(
-        new THREE.SphereGeometry(
-            radius,
-            segments,
-            rings),
-            sphereMaterial);
+        # create a new mesh with
+        # sphere geometry - we will cover
+        # the sphereMaterial next!
+        sphere = new THREE.Mesh(
+            new THREE.SphereGeometry(
+                radius,
+                segments,
+                rings),
+                sphereMaterial);
 
-    # add the sphere to the scene
-    scene.add(sphere);
+        # add the sphere to the scene
+        scene.add(sphere);
 
-    #create the sphere's material
-    sphereMaterial =
-    new THREE.MeshLambertMaterial(color: 0xCC0000)
+        #create the sphere's material
+        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
 
-    #create a point light
-    pointLight = new THREE.PointLight(0xFFFFFF);
+        #create a point light
+        pointLight = new THREE.PointLight(0xFFFFFF);
 
-    # set its position
-    pointLight.position.x = 10
-    pointLight.position.y = 50
-    pointLight.position.z = 130
+        # set its position
+        pointLight.position.x = 10
+        pointLight.position.y = 50
+        pointLight.position.z = 130
 
-    # add to the scene
-    scene.add(pointLight)
-
-    renderer.render(scene, camera)
-
-$ -> setupScene()
+        # add to the scene
+        scene.add(pointLight)
+        @scene = scene

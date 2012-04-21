@@ -1,4 +1,10 @@
-class ExampleClass
+class Game
     constructor: () ->
-    exampleMember: () ->
-        alert 'for example.'
+        @graphics = new Graphics()
+    loop: () ->
+        #update game logic
+    start: () ->
+        @graphics.setup()
+        @graphics.loadScene()
+        @graphics.start()
+        @started = true

@@ -21,5 +21,18 @@ refreshClass = (name, callback) ->
         callback()
 
 $ ->
-    refresher = () -> refreshClass('game', () -> setTimeout(refresher,1000))
-    refresher()
+    gameRefresher = () ->
+        refreshClass('game', () -> setTimeout(gameRefresher,1000))
+    graphicsRefresher = () ->
+        refreshClass('graphics', () -> setTimeout(graphicsRefresher,1000))
+    refreshClass 'game', () ->
+        refreshClass 'graphics', () ->
+            window.game = new Game()
+            game.start()
+
+    refreshers = ->
+        gameRefresher()
+        graphicsRefresher()
+
+    setTimeout(refreshers, 1000)
+
