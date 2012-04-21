@@ -1,3 +1,4 @@
+Math.TAU = 2 * Math.PI
 class Graphics
     constructor: () ->
         @frame = 0
@@ -16,7 +17,7 @@ class Graphics
     viewAngle: 45
     speed: 1/10
     updateGraphics: ->
-        #@sphere.position.setX(Math.sin(@frame * @speed) * 15)
+        @sphere.rotation.y = @frame / 720 * Math.TAU
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
@@ -53,35 +54,27 @@ class Graphics
         # so pull it back
         @camera.position.z = 300
 
-        # set up the sphere vars
-        radius = 50
-        segments = 1
-        rings = 1
-
 		#create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
+        sphereMaterial = undefined # new THREE.MeshLambertMaterial(color: 0xCC0000)
 
 		
         # create a new mesh with
         # sphere geometry - we will cover
         # the sphereMaterial next!
         sphere = new THREE.Mesh(
-            new THREE.SphereGeometry(
-                radius,
-                segments,
-                rings,
-                1,
-                Math.PI/4,
-                1,
-                Math.PI/4),
-                sphereMaterial);
+            new THREE.PieceGeometry(16,16,16,3,3,3, 50),sphereMaterial)
+
+        originMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
+        origin = new THREE.Mesh(
+            new THREE.SphereGeometry(50,10,10), originMaterial)
 
         # add the sphere to the scene
-        scene.add(sphere);
+        scene.add(sphere)
+        scene.add(origin)
 
         #create the sphere's material
         sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
-        
+
         #create a point light
         pointLight = new THREE.PointLight(0xFFFFFF);
 
