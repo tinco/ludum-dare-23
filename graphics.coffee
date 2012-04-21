@@ -14,7 +14,7 @@ class Graphics
     viewAngle: 45
     speed: 1/10
     updateGraphics: ->
-        @sphere.position.setX(Math.sin(@frame * @speed * 10) * 15)
+        @sphere.position.setX(Math.sin(@frame * @speed) * 15)
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
