@@ -1,15 +1,21 @@
 class Graphics
     constructor: () ->
+        @frame = 0
     start: () ->
         @loop()
         key('a, ctrl+s', () -> alert "you pressed a or ctrl + s!")
     loop: () ->
+        @updateGraphics()
         @renderer.render(@scene, @camera)
+        @frame += 1
         t = this
         requestAnimationFrame(() -> t.loop())
     viewport: {width: 400, height: 300}
     focus: {near : 0.1, far : 10000}
     viewAngle: 45
+    speed: 1/10
+    updateGraphics: ->
+        @sphere.position.setX(Math.sin(@frame * @speed * 10) * 15)
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
@@ -74,3 +80,4 @@ class Graphics
         # add to the scene
         scene.add(pointLight)
         @scene = scene
+        @sphere = sphere
