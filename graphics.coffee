@@ -1,9 +1,10 @@
 class Graphics
     constructor: () ->
         @frame = 0
+        @viewport.width = document.body.clientWidth
+        @viewport.height = document.body.clientHeight
     start: () ->
         @loop()
-        key('a, ctrl+s', () -> alert "you pressed a or ctrl + s!")
     loop: () ->
         @updateGraphics()
         @renderer.render(@scene, @camera)
@@ -54,7 +55,7 @@ class Graphics
         rings = 16
 
 		#create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
+        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
 		
         # create a new mesh with
         # sphere geometry - we will cover
