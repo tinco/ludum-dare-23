@@ -1,6 +1,8 @@
 class Graphics
     constructor: () ->
-    start: () -> @loop()
+    start: () ->
+        @loop()
+        key('a, ctrl+s', () -> alert "you pressed a or ctrl + s!")
     loop: () ->
         @renderer.render(@scene, @camera)
         t = this
@@ -46,7 +48,7 @@ class Graphics
         rings = 16
 
 		#create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
+        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
 		
         # create a new mesh with
         # sphere geometry - we will cover
