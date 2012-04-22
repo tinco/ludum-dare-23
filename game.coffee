@@ -16,7 +16,7 @@ class Game
         @step = 1000 / @fps #ms
         @pieces = [[[]]]
         @pause = false
-        
+
     loop: () ->
         t = this
         step = -> t.gameStep()
@@ -50,21 +50,18 @@ class Game
             @pieces[@piece.position.x][@piece.position.y].push @piece
             @newPiece()
 
+    newBrick: () ->
+        r = Math.floor((Math.random()*7));
+        @brick = new BrickKinds[r]()
+        @graphics.addToScene(p.mesh) for p in @brick.pieces
+
     newPiece: () ->
-        @piece = new THREE.Mesh(
-            new THREE.CubeGeometry(
-                piece_size, piece_size, piece_size),
-                new THREE.MeshLambertMaterial(
-                    color: 0xCC0000))
-        
-        @graphics.addToScene(@piece)
-        @piece.position.z = 150
-    
+        @piece = new Piece()
+        @graphics.addToScene(@piece.mesh)
+        @piece.setPositionZ = 150
+
     onPiece = (piece, pieces) ->
         for p in pieces
             if piece.position.z < p.position.z+piece_size
                 return true
         return false
-            
-        
-        
