@@ -25,6 +25,10 @@ class World
                 cell.step(new_world)
         @world = new_world
 
+    populateCell: (r,c) ->
+        p = new PopulatedCell(@world, r c)
+        @world[r][c] = p
+
     createMesh: () ->
         # create the sphere's material
         sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)

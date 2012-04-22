@@ -9,7 +9,7 @@ class Cell
         right = @column + 1
         if @column == 0
             left = World.CIRCUMFERENCE - 1
-        if @column == World.CIRCUMFERENCE -1
+        if @column == World.CIRCUMFERENCE - 1
             right = 0
         above = @row + 1
         under = @row - 1
@@ -21,7 +21,7 @@ class Cell
         ]
         neighbours = {}
         for coord in coordinates
-            cell = @world[coord[0]][coord[1]]
+            cell = @world[coord[0]]?[coord[1]]
             if cell?
                 neighbours[cell.constructor] ?= []
                 neighbours[cell.constructor].push cell
