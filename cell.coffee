@@ -8,6 +8,7 @@ class Cell
         @column = c
         @kind = kind || Cell.Empty
         @newKind = @kind
+        @mesh = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE),new THREE.MeshLambertMaterial(color: 0xCC00FF))
 
     neighbours: () ->
         left = @column - 1

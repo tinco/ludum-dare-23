@@ -1,11 +1,15 @@
 Math.TAU = 2 * Math.PI
 class Graphics
-    constructor: () ->
+    constructor: (game) ->
+        @game = game
         @nastyCamera = new THREE.Camera()
         @frame = 0
         @viewport.width = document.body.clientWidth
         @viewport.height = document.body.clientHeight
     start: () ->
+        for row,r in @game.world.world
+            for cell,c in row
+                @addToScene(c,r-2,cell)
         @loop()
     loop: () ->
         @updateGraphics()
@@ -37,8 +41,11 @@ class Graphics
         # attach the render-supplied DOM element
         @container.append(@renderer.domElement)
 
-    addToScene: (x,y) -> 
-        p = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE),new THREE.MeshLambertMaterial(color: 0xCC00FF))
+    addToScene: (x,y, c) -> 
+        #p = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE),new THREE.MeshLambertMaterial(color: 0xCC00FF))
+        p = c.mesh
+        p.position.x = 0
+        p.position.y = 0
         p.position.z = 1
         @rotX(p.position, y * World.ANGLE)
         @rotY(p.position, x * World.ANGLE)

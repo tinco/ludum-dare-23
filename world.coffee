@@ -1,6 +1,6 @@
 class World
     @RADIUS = 50
-    @CIRCUMFERENCE = 20
+    @CIRCUMFERENCE = 15
     @HEIGHT = 5
     @ANGLE = Math.TAU / @CIRCUMFERENCE
     @SIZE = @ANGLE * @RADIUS

@@ -9,11 +9,11 @@ class Keyboard
         @dir
 
     start: () ->
-        @c = @graphics.camera
-        key 'w', => @rotate "X-"
-        key 'a', => @rotate "Y-"
-        key 's', => @rotate "X+"
-        key 'd', => @rotate "Y+"
+        @c = @graphics.camera.position
+        key 'w', => @rotX(@c,-World.ANGLE)
+        key 'a', => @rotY(@c,-World.ANGLE)
+        key 's', => @rotX(@c,World.ANGLE)
+        key 'd', => @rotY(@c,World.ANGLE)
         key 'p', => @game.pause = !@game.pause
 
     rotate: (dir) ->
@@ -32,9 +32,11 @@ class Keyboard
         z = op.y*Math.sin(val) + op.z*Math.cos(val)
         op.y = y
         op.z = z
+        @graphics.camera.lookAt(World.CENTER)
 
     rotY: (op,val) ->
         x = op.x*Math.cos(val) + op.z*Math.sin(val)
         z = op.z*Math.cos(val) - op.x*Math.sin(val)
         op.x = x
         op.z = z
+        @graphics.camera.lookAt(World.CENTER)

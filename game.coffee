@@ -1,7 +1,7 @@
 class Game
     constructor: () ->
         @frame = 0
-        @graphics = new Graphics()
+        @graphics = new Graphics(@)
         @keyboard = new Keyboard(@,@graphics)
         @timeAtLastFrame = new Date().getTime()
         @leftover = 0.0
