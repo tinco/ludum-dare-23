@@ -1,13 +1,29 @@
 class World
-    WORLD_RADIUS = 50
-    WORLD_CIRCUMFERENCE = 20
-    WORLD_HEIGHT = 10
+    @RADIUS = 50
+    @CIRCUMFERENCE = 20
+    @HEIGHT = 10
 
     constructor: () ->
         @createMesh()
-        @world = ((new EmptyCell() for j in [0..(WORLD_CIRCUMFERENCE - 1)]) for i in [1..WORLD_HEIGHT])
+        @world = @createEmptyWorld()
+
+    createEmptyWorld: () ->
+        @world = []
+        createRow = (r)=>
+            row = (new EmptyCell(@world,r,c) for c in [0..(World.CIRCUMFERENCE - 1)])
+            @world.push row
+            row
+        (createRow(r) for r in [0..(World.HEIGHT - 1)])
+
+    duplicateWorld: () ->
+        ((@world[r][c] for c in [0..(World.CIRCUMFERENCE - 1)]) for r in [0..(World.HEIGHT - 1)])
 
     step: () ->
+        new_world = @duplicateWorld()
+        for row,r in @world
+            for cell,c in row
+                cell.step(new_world)
+        @world = new_world
 
     createMesh: () ->
         # create the sphere's material
@@ -18,7 +34,7 @@ class World
         # the sphereMaterial next!
         sphere = new THREE.Mesh(
             new THREE.SphereGeometry(
-                WORLD_RADIUS,
+                World.RADIUS,
                 100,
                 100),
                 sphereMaterial);
