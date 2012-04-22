@@ -13,8 +13,8 @@ class Game
         @timeAtLastFrame = new Date().getTime()
         @leftover = 0.0
         @fps = 30
-        @step = 1000 / @fps #ms
-        @pieces = [[[]]]
+        @step = 1000 / @fps # ms
+        @pieces = []
         @pause = false
 
     loop: () ->
@@ -28,7 +28,7 @@ class Game
         @graphics.start()
         @keyboard.start()
         @started = true
-        @newPiece()
+        @newPiece(0,0)
         @loop()
 
     gameStep: () ->
@@ -45,23 +45,34 @@ class Game
         @timeAtLastFrame = timeAtThisFrame;
 
     updateLogic: () ->
-        @piece.position.z -= .3 if !@pause
-        if @piece.position.z < world_radius + piece_size / 2 or onPiece(@piece,@pieces[@piece.position.x][@piece.position.y])
-            @pieces[@piece.position.x][@piece.position.y].push @piece
-            @newPiece()
+        if !@pause
+            @piece.position.subSelf(@piece.position.clone().normalize().multiplyScalar(0.3))
+            x = @piece.x
+            y = @piece.y
+            if @piece.position.distanceTo(new THREE.Vector3(0,0,0)) < window.world_radius + piece_size / 2 or onPiece(@piece)
+                @pieces.push(@piece)
+                @newPiece(x,y)
 
     newBrick: () ->
         r = Math.floor((Math.random()*7));
         @brick = new BrickKinds[r]()
         @graphics.addToScene(p.mesh) for p in @brick.pieces
 
-    newPiece: () ->
-        @piece = new Piece()
-        @graphics.addToScene(@piece.mesh)
-        @piece.setPositionZ = 150
+    newPiece: (x,y) ->
+        @piece = new THREE.Mesh(
+            new THREE.PieceGeometry(
+                piece_size, piece_size, piece_size),
+                new THREE.MeshLambertMaterial(
+                    color: 0xCC0000))
 
-    onPiece = (piece, pieces) ->
-        for p in pieces
-            if piece.position.z < p.position.z+piece_size
+        @piece.rotation = @graphics.camera.rotation.clone()
+        @piece.position = @graphics.camera.position.clone().normalize().multiplyScalar(150)
+        @piece.x = x
+        @piece.y = y
+        @graphics.addToScene(@piece)
+
+    onPiece = (piece) ->
+        for p in @pieces
+            if piece.position.distanceTo(p.position) < piece_size
                 return true
         return false

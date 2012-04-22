@@ -3,13 +3,11 @@
  * based on http://papervision3d.googlecode.com/svn/trunk/as3/trunk/src/org/papervision3d/objects/primitives/Piece.as
  */
 
-THREE.PieceGeometry = function ( width, height, depth, segmentsWidth, segmentsHeight, segmentsDepth, radius, materials, sides ) {
+THREE.PieceGeometry = function ( width, height, segmentsWidth, segmentsHeight, segmentsDepth, radius, materials, sides ) {
     THREE.Geometry.call( this );
-
-    var scope = this,
-    width_half = width / 2,
-    height_half = height / 2,
-    depth_half = depth / 2;
+    // Width is how many faces a circumference has.
+    // Height is how far the piece extrudes.
+    var scope = this;
 
     var mpx, mpy, mpz, mnx, mny, mnz;
 
@@ -55,36 +53,27 @@ THREE.PieceGeometry = function ( width, height, depth, segmentsWidth, segmentsHe
 
     }
 
-    this.sides.px && buildPlane( 'z', 'y', - 1, - 1, 1, depth, height, width_half, mpx ); // px
-    this.sides.nx && buildPlane( 'z', 'y',   1, - 1, -1, depth, height, - width_half, mnx ); // nx
-    this.sides.py && buildPlane( 'x', 'z',   1,   1, 1, width, depth, height_half, mpy ); // py
-    this.sides.ny && buildPlane( 'x', 'z',   1, - 1, -1,width, depth, - height_half, mny ); // ny
-    this.sides.pz && buildPlane( 'x', 'y',   1, - 1, 1,width, height, depth_half, mpz ); // pz
-    this.sides.nz && buildPlane( 'x', 'y', - 1, - 1, -1,width, height, - depth_half, mnz ); // nz
+    this.sides.px && buildPlane( 'z', 'y', - 1, - 1,  1, width, height, mpx ); // px
+    this.sides.nx && buildPlane( 'z', 'y',   1, - 1, -1, width, height, mnx ); // nx
+    this.sides.py && buildPlane( 'x', 'z',   1,   1,  1, width, depth, mpy ); // py
+    this.sides.ny && buildPlane( 'x', 'z',   1, - 1, -1, width, depth, mny ); // ny
+    this.sides.pz && buildPlane( 'x', 'y',   1, - 1,  1, width, height, mpz ); // pz
+    this.sides.nz && buildPlane( 'x', 'y', - 1, - 1, -1, width, height, mnz ); // nz
 
-    function buildPlane( u, v, udir, vdir, wdir, width, height, depth, material ) {
-
+    function buildPlane( u, v, udir, vdir, wdir, height, depth, material ) {
         var w, ix, iy,
         gridX = segmentsWidth || 1,
         gridY = segmentsHeight || 1,
-        width_half = width / 2,
-        height_half = height / 2,
         offset = scope.vertices.length;
 
         if ( ( u === 'x' && v === 'y' ) || ( u === 'y' && v === 'x' ) ) {
-
             w = 'z';
-
         } else if ( ( u === 'x' && v === 'z' ) || ( u === 'z' && v === 'x' ) ) {
-
             w = 'y';
             gridY = segmentsDepth || 1;
-
         } else if ( ( u === 'z' && v === 'y' ) || ( u === 'y' && v === 'z' ) ) {
-
             w = 'x';
             gridX = segmentsDepth || 1;
-
         }
 
         var gridX1 = gridX + 1,
@@ -93,9 +82,9 @@ THREE.PieceGeometry = function ( width, height, depth, segmentsWidth, segmentsHe
         segment_height = height / gridY,
         normal = new THREE.Vector3();
 
-        normal[ w ] = depth > 0 ? 1 : - 1;
-        var angle = Math.TAU / width
-        var startAngle =  1/2 * angle
+        normal[ w ] = 0 > 0 ? 1 : - 1; // TODO fix normals
+        var angle = Math.TAU / width;
+        var startAngle =  1/2 * angle;
         if (w != 'y') {
             for ( iy = 0; iy < gridY1; iy ++ ) {
                 for ( ix = 0; ix < gridX1; ix ++ ) {
