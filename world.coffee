@@ -12,10 +12,16 @@ class World
         @loadTerrain()
 
     loadTerrain: () ->
-        @earthify(i,j) for i in [0..7] for j in [0..7]
-        @seedify(i,j) for i in [1..2] for j in [1..2]
-        @seedify(i,j) for i in [5..6] for j in [5..6]
+        #@earthify(i,j) for i in [0..7] for j in [0..7]
+        #@seedify(i,j) for i in [1..2] for j in [1..2]
+        #@seedify(i,j) for i in [5..6] for j in [5..6]
         
+        @earthify(34,5)
+        @seedify(34,2)
+        @seedify(0,3)
+        @seedify(0,4)
+        @seedify(33,4)
+        @live(33,3)
 
     debug: (world) ->
         for row in (world || @world)
@@ -40,14 +46,16 @@ class World
             for cell in row
                 cell.finishStep()
 
-    earthify: (r,c) ->
+    earthify: (c,r) ->
         p = new Cell(@world, r, c, Cell.Earth)
         @world[r][c] = p
         
-    seedify: (r, c) ->
+    seedify: (c, r) ->
         p = new Cell(@world, r, c, Cell.Forest)
         @world[r][c] = p
-        
+    live: (c, r) ->
+        p = new Cell(@world, r, c, Cell.Life)
+        @world[r][c] = p
 
     createMesh: () ->
         # create the sphere's material
