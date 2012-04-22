@@ -4,7 +4,6 @@ class Cell
     @Grass = 2
     @Forest =3
     @Life = 4
-    
 
     constructor: (world, r, c, kind) ->
         @world = world
@@ -74,19 +73,21 @@ class Cell
             when Cell.Earth
                 if n[Cell.Water]?.length > 0
                     @newKind = Cell.Grass
+                if n[Cell.Earth]?.length == 8
+                    @newKind = Cell.Water
             when Cell.Grass
                 if n[Cell.Life]?.length > 0 and n[Cell.Water]?.length > 0
                     @newKind = Cell.Forest
                 else if n[Cell.Water] is undefined
                     @newKind = Cell.Earth
             when Cell.Forest
-                if n[Cell.Life]?.length > 0
+                if n[Cell.Life]?.length > 0 and age > 3
                     @newKind = Cell.Life
                     #@age = age
             when Cell.Life
                 if n[Cell.Water] is undefined
                     @newKind = Cell.Earth
-                if n[Cell.Forest] is undefined and n[Cell.Grass] is undefined
+                if n[Cell.Forest] is undefined 
                     @newKind = Cell.Grass
             
 

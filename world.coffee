@@ -17,11 +17,12 @@ class World
         #@seedify(i,j) for i in [1..2] for j in [1..2]
         #@seedify(i,j) for i in [5..6] for j in [5..6]
         
-        @seedify(0,1)
-        @seedify(0,2)
-        @earthify(1,2)
-        @seedify(1,3)
-        @live(1,1)
+        @seedify(0,4)
+        @earthify(0,5)
+        @seedify(1,5)
+        @seedify(1,6)
+        @earthify(1,7)
+        @live(1,4)
 
     debug: (world) ->
         for row in (world || @world)
