@@ -13,6 +13,7 @@ class Graphics
         @loop()
     loop: () ->
         @updateGraphics()
+        TWEEN.update()
         @renderer.render(@scene, @camera)
         @frame += 1
         t = this
@@ -31,7 +32,7 @@ class Graphics
         # and a scene
         @renderer = new THREE.WebGLRenderer()
         @camera =
-            new THREE.PerspectiveCamera(
+            new Camera(@game,
                 @viewAngle,
                 @viewport.width / @viewport.height,
                 @focus.near, @focus.far)
@@ -42,7 +43,6 @@ class Graphics
         @container.append(@renderer.domElement)
 
     addToScene: (x,y, c) -> 
-        #p = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE),new THREE.MeshLambertMaterial(color: 0xCC00FF))
         p = c.mesh
         p.position.x = 0
         p.position.y = 0
@@ -50,12 +50,12 @@ class Graphics
         @rotX(p.position, y * World.ANGLE)
         @rotY(p.position, x * World.ANGLE)
         p.position.normalize().multiplyScalar(World.RADIUS+World.SIZE/2)
-        # HOLY SHIT LELIJKE HACK, maar het werkt
+        # HOLY SHIT UGLY HACK, but it works
         @nastyCamera.position = p.position.clone()
         @nastyCamera.lookAt(World.CENTER)
         p.rotation = @nastyCamera.rotation.clone()
         @scene.add(p)
-        
+
     rotX: (op,val) ->
         y = op.y*Math.cos(val) - op.z*Math.sin(val)
         z = op.y*Math.sin(val) + op.z*Math.cos(val)
@@ -76,10 +76,6 @@ class Graphics
 
         # add the camera to the scene
         scene.add(@camera)
-
-        # the camera starts at 0,0,0
-        # so pull it back
-        @camera.position.z = 250
 
         #create a point light
         pointLight = new THREE.PointLight(0xFFFFFF);
