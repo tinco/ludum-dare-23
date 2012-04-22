@@ -25,6 +25,12 @@ $ ->
         refreshClass('game', () -> setTimeout(gameRefresher,1000))
     graphicsRefresher = () ->
         refreshClass('graphics', () -> setTimeout(graphicsRefresher,1000))
+    worldRefresher = () ->
+        refreshClass('world', () -> setTimeout(worldRefresher,1000))
+    cellRefresher = () ->
+        refreshClass('cell', () -> setTimeout(cellRefresher,1000))
+    keyboardRefresher = () ->
+        refreshClass('keyboard', () -> setTimeout(keyboardRefresher,1000))
     refreshClass 'game', () ->
         refreshClass 'graphics', () ->
             window.game = new Game()
@@ -33,6 +39,9 @@ $ ->
     refreshers = ->
         gameRefresher()
         graphicsRefresher()
+        worldRefresher()
+        cellRefresher()
+        keyboardRefresher()
 
     setTimeout(refreshers, 1000)
 
