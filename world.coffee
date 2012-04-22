@@ -5,6 +5,7 @@ class World
 
     constructor: () ->
         @createMesh()
+        @world = ((new EmptyCell() for j in [0..(WORLD_CIRCUMFERENCE - 1)]) for i in [1..WORLD_HEIGHT])
 
     step: () ->
 
