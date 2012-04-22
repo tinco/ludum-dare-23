@@ -9,7 +9,7 @@ class Graphics
     start: () ->
         for row,r in @game.world.world
             for cell,c in row
-                @addToScene(c,r-2,cell)
+                @addToScene(c,r - (World.HEIGHT - 1) / 2,cell)
         @loop()
     loop: () ->
         @updateGraphics()

@@ -1,7 +1,7 @@
 class World
     @RADIUS = 50
-    @CIRCUMFERENCE = 15
-    @HEIGHT = 5
+    @CIRCUMFERENCE = 35
+    @HEIGHT = 11
     @ANGLE = Math.TAU / @CIRCUMFERENCE
     @SIZE = @ANGLE * @RADIUS
     @CENTER = new THREE.Vector3(0,0,0)
