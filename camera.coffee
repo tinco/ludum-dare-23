@@ -1,25 +1,51 @@
 class Camera extends THREE.PerspectiveCamera
-    constructor: (row, column, rest...) ->
+    @MOVE_DURATION = 2
+    @DISTANCE = 250
+
+    constructor: (game, rest...) ->
         super rest...
-        @row = row
-        @column = column
+        @game = game
+        @position.z = Camera.DISTANCE
+        @row = 0
+        @column = 0
 
-    moveLeft: () -> @rotY(@position,-World.ANGLE)
-    moveRight: () -> @rotY(@position,World.ANGLE)
-    moveUp: () -> @rotX(@position,-World.ANGLE)
-    moveDown: () -> @rotX(@position,World.ANGLE)
+    moveLeft: () -> @moveTo @row, @column - 1
+    moveRight: () -> @moveTo @row, @column + 1
+    moveUp: () -> @moveTo @row - 1, @column
+    moveDown: () -> @moveTo @row + 1, @column
+
     moveTo: (r,c) ->
+        r = if r >= 0 and r < World.HEIGHT then r else @row
+        if c == World.CIRCUMFERENCE
+            c = 0
+        else if c == -1
+            c = World.CIRCUMFERENCE - 1
+        @row = r
+        @column = c
 
-    rotX: (op,val) ->
-        y = op.y*Math.cos(val) - op.z*Math.sin(val)
-        z = op.y*Math.sin(val) + op.z*Math.cos(val)
-        op.y = y
-        op.z = z
-        @lookAt(World.CENTER)
+        newPosition = @calculatePosition(r,c)
+        @currentTween?.stop()
+        @currentTween = new TWEEN.Tween(@position).to(newPosition,150)
+            .onUpdate(=>@lookAt(World.CENTER))
+            .easing( TWEEN.Easing.Linear.None)
+            .start()
 
-    rotY: (op,val) ->
-        x = op.x*Math.cos(val) + op.z*Math.sin(val)
-        z = op.z*Math.cos(val) - op.x*Math.sin(val)
-        op.x = x
-        op.z = z
-        @lookAt(World.CENTER)
+    calculatePosition: (r,c) ->
+        newPosition = @game.world.world[r][c].mesh.position.clone()
+        newPosition.normalize().multiplyScalar(Camera.DISTANCE)
+        newPosition
+
+    rotX: (position,angle) ->
+        newPosition = new THREE.Vector3()
+        newPosition.y = position.y*Math.cos(angle) - position.z*Math.sin(angle)
+        newPosition.z = position.y*Math.sin(angle) + position.z*Math.cos(angle)
+        newPosition.x = position.x
+        newPosition
+
+    rotY: (position,angle) ->
+        newPosition = new THREE.Vector3()
+        newPosition.x = position.x*Math.cos(angle) + position.z*Math.sin(angle)
+        newPosition.z = position.z*Math.cos(angle) - position.x*Math.sin(angle)
+        newPosition.y = position.y
+        newPosition
+

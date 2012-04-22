@@ -13,6 +13,7 @@ class Graphics
         @loop()
     loop: () ->
         @updateGraphics()
+        TWEEN.update()
         @renderer.render(@scene, @camera)
         @frame += 1
         t = this
@@ -31,7 +32,7 @@ class Graphics
         # and a scene
         @renderer = new THREE.WebGLRenderer()
         @camera =
-            new Camera(0,0,
+            new Camera(@game,
                 @viewAngle,
                 @viewport.width / @viewport.height,
                 @focus.near, @focus.far)
@@ -75,10 +76,6 @@ class Graphics
 
         # add the camera to the scene
         scene.add(@camera)
-
-        # the camera starts at 0,0,0
-        # so pull it back
-        @camera.position.z = 250
 
         #create a point light
         pointLight = new THREE.PointLight(0xFFFFFF);
