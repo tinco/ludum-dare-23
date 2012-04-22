@@ -69,24 +69,24 @@ class Cell
             @age = 0
         switch @kind
             when Cell.Water
-                if n[Cell.Life]?.length > 0 and age > 3
+                if n[Cell.Life]?.length > 0 and age > 2
                     @newKind = Cell.Earth
             when Cell.Earth
                 if n[Cell.Water]?.length > 0
                     @newKind = Cell.Grass
             when Cell.Grass
-                if n[Cell.Life]?.length > 0
+                if n[Cell.Life]?.length > 0 and n[Cell.Water]?.length > 0
                     @newKind = Cell.Forest
                 else if n[Cell.Water] is undefined
                     @newKind = Cell.Earth
             when Cell.Forest
                 if n[Cell.Life]?.length > 0
                     @newKind = Cell.Life
-                    @age = age
+                    #@age = age
             when Cell.Life
-                if n[Cell.Water]?
+                if n[Cell.Water] is undefined
                     @newKind = Cell.Earth
-                if n[Cell.Forest]?
+                if n[Cell.Forest] is undefined and n[Cell.Grass] is undefined
                     @newKind = Cell.Grass
             
 

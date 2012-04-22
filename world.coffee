@@ -8,20 +8,20 @@ class World
 
     constructor: () ->
         @createMesh()
-        @world = @createEmptyWorld()
-        @loadTerrain()
+        @initialize()
+        @alive = []
 
-    loadTerrain: () ->
+    initialize: () ->
+        @world = @createEmptyWorld()
         #@earthify(i,j) for i in [0..7] for j in [0..7]
         #@seedify(i,j) for i in [1..2] for j in [1..2]
         #@seedify(i,j) for i in [5..6] for j in [5..6]
         
-        @earthify(34,5)
-        @seedify(34,2)
-        @seedify(0,3)
-        @seedify(0,4)
-        @seedify(33,4)
-        @live(33,3)
+        @seedify(0,1)
+        @seedify(0,2)
+        @earthify(1,2)
+        @seedify(1,3)
+        @live(1,1)
 
     debug: (world) ->
         for row in (world || @world)
@@ -39,12 +39,16 @@ class World
         (createRow(r) for r in [0..(World.HEIGHT - 1)])
 
     step: () ->
+        @alive = []
         for row in @world
             for cell in row
                 cell.step()
         for row in @world
             for cell in row
                 cell.finishStep()
+                if cell.kind == Cell.Life
+                    @alive.push cell
+        @finished = @alive.length == 0        
 
     earthify: (c,r) ->
         p = new Cell(@world, r, c, Cell.Earth)

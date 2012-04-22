@@ -14,11 +14,8 @@ class Game
         setInterval(step, @step / 10)
 
     start: () ->
-        @graphics.setup()
-        @graphics.loadScene()
         @world = new World()
-        @graphics.scene.add(@world.mesh)
-        @graphics.start()
+        @graphics.start(@world)
         @keyboard.start()
         @started = true
         @loop()
@@ -39,3 +36,6 @@ class Game
     updateLogic: () ->
         if !@pause
             @world.step()
+            if @world.finished
+                @world.initialize()
+                @graphics.loadCells()

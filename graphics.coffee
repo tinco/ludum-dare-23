@@ -6,11 +6,16 @@ class Graphics
         @frame = 0
         @viewport.width = document.body.clientWidth
         @viewport.height = document.body.clientHeight
+        @cells = []
+        
+    initialize: () ->
+        @setup()
+        @loadScene()        
+        
     start: () ->
-        for row,r in @game.world.world
-            for cell,c in row
-                @addToScene(c,r - (World.HEIGHT - 1) / 2,cell)
+        @initialize()
         @loop()
+        
     loop: () ->
         @updateGraphics()
         TWEEN.update()
@@ -18,11 +23,14 @@ class Graphics
         @frame += 1
         t = this
         requestAnimationFrame(() -> t.loop())
+        
     viewport: {width: 400, height: 300}
     focus: {near : 0.1, far : 10000}
     viewAngle: 45
     speed: 1/10
+    
     updateGraphics: ->
+    
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
@@ -55,6 +63,7 @@ class Graphics
         @nastyCamera.lookAt(World.CENTER)
         p.rotation = @nastyCamera.rotation.clone()
         @scene.add(p)
+        @cells.push c
 
     rotX: (op,val) ->
         y = op.y*Math.cos(val) - op.z*Math.sin(val)
@@ -88,3 +97,13 @@ class Graphics
         # add to the scene
         scene.add(pointLight)
         @scene = scene
+        @scene.add(@game.world.mesh)
+        @loadCells()
+        
+    loadCells: () ->
+        for c in @cells
+            @scene.remove c.mesh
+        @cells = []
+        for row,r in @game.world.world
+            for cell,c in row
+                @addToScene(c,r - (World.HEIGHT - 1) / 2,cell)
