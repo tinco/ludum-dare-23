@@ -7,6 +7,13 @@ class World
         @createMesh()
         @world = @createEmptyWorld()
 
+    debug: (world) ->
+        for row in (world || @world)
+            line = ""
+            for c in row
+                line += if c.constructor == PopulatedCell then 1 else 0
+            console.debug line
+
     createEmptyWorld: () ->
         @world = []
         createRow = (r)=>
@@ -20,13 +27,13 @@ class World
 
     step: () ->
         new_world = @duplicateWorld()
-        for row,r in @world
-            for cell,c in row
+        for row in @world
+            for cell in row
                 cell.step(new_world)
         @world = new_world
 
     populateCell: (r,c) ->
-        p = new PopulatedCell(@world, r c)
+        p = new PopulatedCell(@world, r, c)
         @world[r][c] = p
 
     createMesh: () ->

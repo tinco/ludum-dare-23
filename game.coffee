@@ -38,4 +38,5 @@ class Game
 
     updateLogic: () ->
         if !@pause
+            console.debug "step"
             @world.step()
