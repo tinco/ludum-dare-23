@@ -8,7 +8,15 @@ class Cell
         @column = c
         @kind = kind || Cell.Empty
         @newKind = @kind
-        @mesh = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE),new THREE.MeshLambertMaterial(color: 0xCC00FF))
+        @mesh = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE))
+        @updateMesh()
+
+    updateMesh: () ->
+        materials = {}
+        materials[Cell.Empty] = new THREE.MeshLambertMaterial(color: 0xCC00FF)
+        materials[Cell.Populated] = new THREE.MeshLambertMaterial(color: 0xCCFF00)
+
+        @mesh.material = materials[@kind]
 
     neighbours: () ->
         left = @column - 1
@@ -55,4 +63,6 @@ class Cell
                     @newKind = Cell.Empty
 
     finishStep: () ->
-        @kind = @newKind
+        if @kind != @newKind
+            @kind = @newKind
+            @updateMesh()

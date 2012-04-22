@@ -22,7 +22,7 @@ class World
             for c in row
                 line += c.kind
             console.debug line
-            
+
     createEmptyWorld: () ->
         @world = []
         createRow = (r)=>

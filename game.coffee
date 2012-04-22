@@ -6,7 +6,7 @@ class Game
         @timeAtLastFrame = new Date().getTime()
         @leftover = 0.0
         @fps = 30
-        @step = 3000 # ms
+        @step = 1000 # ms
         @pause = false
 
     loop: () ->
