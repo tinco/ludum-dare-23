@@ -6,6 +6,12 @@ class World
     constructor: () ->
         @createMesh()
         @world = @createEmptyWorld()
+        @loadLine()
+
+    loadLine: () ->
+        @populateCell(1,1)
+        @populateCell(1,2)
+        @populateCell(1,3)
 
     debug: (world) ->
         for row in (world || @world)

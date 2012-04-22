@@ -23,10 +23,12 @@ class Cell
          [under, left],
          [under, right]
         ]
-        # row 1 column 2 is neighbour van row 0 column 2
         neighbours = {}
         for coord in coordinates
-            cell = @world[coord[0]]?[coord[1]]
+            cell = null
+            row = @world[coord[0]]
+            if row?
+                cell = row[coord[1]]
             if cell?
                 neighbours[cell.constructor] ?= []
                 neighbours[cell.constructor].push cell
@@ -34,12 +36,23 @@ class Cell
 
 class EmptyCell extends Cell
     step: (newWorld) ->
-        if @neighbours()[PopulatedCell]?.length > 3
-            console.debug "become alive"
-            newWorld[@row][@column] = new PopulatedCell(@world, @row, @column)
+        if @neighbours()[PopulatedCell]?.length == 3
+            newWorld[@row][@column] = new PopulatedCell(newWorld, @row, @column)
+        else
+            @world = newWorld
 
 class PopulatedCell extends Cell
     step: (newWorld) ->
         neighbours = @neighbours()
-        if neighbours[PopulatedCell]?.length > 3 || neighbours[PopulatedCell]?.length < 2 || not neighbours[PopulatedCell]?
-            newWorld[@row][@column] = new EmptyCell(@world, @row, @column)
+        if neighbours[PopulatedCell]?.length > 3
+            #console.debug "die of overpopulation"
+            newWorld[@row][@column] = new EmptyCell(newWorld, @row, @column)
+        else if neighbours[PopulatedCell]?.length < 2
+            #console.debug "die of underpopulation"
+            newWorld[@row][@column] = new EmptyCell(newWorld, @row, @column)
+        else if not neighbours[PopulatedCell]?
+            #console.debug "die of underpopulation"
+            newWorld[@row][@column] = new EmptyCell(newWorld, @row, @column)
+        else
+            #console.debug "survive"
+            @world = newWorld

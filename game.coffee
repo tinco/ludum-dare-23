@@ -6,7 +6,7 @@ class Game
         @timeAtLastFrame = new Date().getTime()
         @leftover = 0.0
         @fps = 30
-        @step = 1000 # ms
+        @step = 3000 # ms
         @pause = false
 
     loop: () ->
@@ -38,5 +38,4 @@ class Game
 
     updateLogic: () ->
         if !@pause
-            console.debug "step"
             @world.step()
