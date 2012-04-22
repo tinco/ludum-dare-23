@@ -51,30 +51,6 @@ class Graphics
         # so pull it back
         @camera.position.z = 250
 
-        # set up the sphere vars
-        radius = world_radius
-        segments = 16
-        rings = 16
-
-        # create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
-        
-        # create a new mesh with
-        # sphere geometry - we will cover
-        # the sphereMaterial next!
-        sphere = new THREE.Mesh(
-            new THREE.SphereGeometry(
-                radius,
-                segments,
-                rings),
-                sphereMaterial);
-        
-        # add the sphere to the scene
-        scene.add(sphere)
-
-        #create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
-
         #create a point light
         pointLight = new THREE.PointLight(0xFFFFFF);
 
@@ -86,4 +62,3 @@ class Graphics
         # add to the scene
         scene.add(pointLight)
         @scene = scene
-        @sphere = sphere
