@@ -1,8 +1,13 @@
 class Cell
-    constructor: (world, r, c) ->
+    @Empty = 0
+    @Populated = 1
+
+    constructor: (world, r, c, kind) ->
         @world = world
         @row = r
         @column = c
+        @kind = kind || Cell.Empty
+        @newKind = @kind
 
     neighbours: () ->
         left = @column - 1
@@ -30,29 +35,23 @@ class Cell
             if row?
                 cell = row[coord[1]]
             if cell?
-                neighbours[cell.constructor] ?= []
-                neighbours[cell.constructor].push cell
+                neighbours[cell.kind] ?= []
+                neighbours[cell.kind].push cell
         neighbours
 
-class EmptyCell extends Cell
-    step: (newWorld) ->
-        if @neighbours()[PopulatedCell]?.length == 3
-            newWorld[@row][@column] = new PopulatedCell(newWorld, @row, @column)
-        else
-            @world = newWorld
+    step: () ->
+        switch @kind
+            when Cell.Empty
+                if @neighbours()[Cell.Populated]?.length == 3
+                    @newKind = Cell.Populated
+            when Cell.Populated
+                neighbours = @neighbours()
+                if neighbours[Cell.Populated]?.length > 3
+                    @newKind = Cell.Empty
+                else if neighbours[Cell.Populated]?.length < 2
+                    @newKind = Cell.Empty
+                else if not neighbours[Cell.Populated]?
+                    @newKind = Cell.Empty
 
-class PopulatedCell extends Cell
-    step: (newWorld) ->
-        neighbours = @neighbours()
-        if neighbours[PopulatedCell]?.length > 3
-            #console.debug "die of overpopulation"
-            newWorld[@row][@column] = new EmptyCell(newWorld, @row, @column)
-        else if neighbours[PopulatedCell]?.length < 2
-            #console.debug "die of underpopulation"
-            newWorld[@row][@column] = new EmptyCell(newWorld, @row, @column)
-        else if not neighbours[PopulatedCell]?
-            #console.debug "die of underpopulation"
-            newWorld[@row][@column] = new EmptyCell(newWorld, @row, @column)
-        else
-            #console.debug "survive"
-            @world = newWorld
+    finishStep: () ->
+        @kind = @newKind
