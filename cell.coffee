@@ -1,8 +1,13 @@
 class Cell
-    constructor: (world, r, c) ->
+    @Empty = 0
+    @Populated = 1
+
+    constructor: (world, r, c, kind) ->
         @world = world
         @row = r
         @column = c
+        @kind = kind || Cell.Empty
+        @newKind = @kind
 
     neighbours: () ->
         left = @column - 1
@@ -23,23 +28,30 @@ class Cell
          [under, left],
          [under, right]
         ]
-        # row 1 column 2 is neighbour van row 0 column 2
         neighbours = {}
         for coord in coordinates
-            cell = @world[coord[0]]?[coord[1]]
+            cell = null
+            row = @world[coord[0]]
+            if row?
+                cell = row[coord[1]]
             if cell?
-                neighbours[cell.constructor] ?= []
-                neighbours[cell.constructor].push cell
+                neighbours[cell.kind] ?= []
+                neighbours[cell.kind].push cell
         neighbours
 
-class EmptyCell extends Cell
-    step: (newWorld) ->
-        if @neighbours()[PopulatedCell]?.length > 3
-            console.debug "become alive"
-            newWorld[@row][@column] = new PopulatedCell(@world, @row, @column)
+    step: () ->
+        switch @kind
+            when Cell.Empty
+                if @neighbours()[Cell.Populated]?.length == 3
+                    @newKind = Cell.Populated
+            when Cell.Populated
+                neighbours = @neighbours()
+                if neighbours[Cell.Populated]?.length > 3
+                    @newKind = Cell.Empty
+                else if neighbours[Cell.Populated]?.length < 2
+                    @newKind = Cell.Empty
+                else if not neighbours[Cell.Populated]?
+                    @newKind = Cell.Empty
 
-class PopulatedCell extends Cell
-    step: (newWorld) ->
-        neighbours = @neighbours()
-        if neighbours[PopulatedCell]?.length > 3 || neighbours[PopulatedCell]?.length < 2 || not neighbours[PopulatedCell]?
-            newWorld[@row][@column] = new EmptyCell(@world, @row, @column)
+    finishStep: () ->
+        @kind = @newKind

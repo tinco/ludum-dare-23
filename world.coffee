@@ -9,34 +9,38 @@ class World
     constructor: () ->
         @createMesh()
         @world = @createEmptyWorld()
+        @loadLine()
+
+    loadLine: () ->
+        @populateCell(1,1)
+        @populateCell(1,2)
+        @populateCell(1,3)
 
     debug: (world) ->
         for row in (world || @world)
             line = ""
             for c in row
-                line += if c.constructor == PopulatedCell then 1 else 0
+                line += c.kind
             console.debug line
             
     createEmptyWorld: () ->
         @world = []
         createRow = (r)=>
-            row = (new EmptyCell(@world,r,c) for c in [0..(World.CIRCUMFERENCE - 1)])
+            row = (new Cell(@world,r,c) for c in [0..(World.CIRCUMFERENCE - 1)])
             @world.push row
             row
         (createRow(r) for r in [0..(World.HEIGHT - 1)])
 
-    duplicateWorld: () ->
-        ((@world[r][c] for c in [0..(World.CIRCUMFERENCE - 1)]) for r in [0..(World.HEIGHT - 1)])
-
     step: () ->
-        new_world = @duplicateWorld()
         for row in @world
             for cell in row
-                cell.step(new_world)
-        @world = new_world
+                cell.step()
+        for row in @world
+            for cell in row
+                cell.finishStep()
 
     populateCell: (r,c) ->
-        p = new PopulatedCell(@world, r, c)
+        p = new Cell(@world, r, c, Cell.Populated)
         @world[r][c] = p
 
     createMesh: () ->
