@@ -1,6 +1,7 @@
 Math.TAU = 2 * Math.PI
 class Graphics
     constructor: () ->
+        @nastyCamera = new THREE.Camera()
         @frame = 0
         @viewport.width = document.body.clientWidth
         @viewport.height = document.body.clientHeight
@@ -36,7 +37,29 @@ class Graphics
         # attach the render-supplied DOM element
         @container.append(@renderer.domElement)
 
-    addToScene: (mesh) -> @scene.add(mesh)
+    addToScene: (x,y) -> 
+        p = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE),new THREE.MeshLambertMaterial(color: 0xCC00FF))
+        p.position.z = 1
+        @rotX(p.position, y * World.ANGLE)
+        @rotY(p.position, x * World.ANGLE)
+        p.position.normalize().multiplyScalar(World.RADIUS+World.SIZE/2)
+        # HOLY SHIT LELIJKE HACK, maar het werkt
+        @nastyCamera.position = p.position.clone()
+        @nastyCamera.lookAt(World.CENTER)
+        p.rotation = @nastyCamera.rotation.clone()
+        @scene.add(p)
+        
+    rotX: (op,val) ->
+        y = op.y*Math.cos(val) - op.z*Math.sin(val)
+        z = op.y*Math.sin(val) + op.z*Math.cos(val)
+        op.y = y
+        op.z = z
+
+    rotY: (op,val) ->
+        x = op.x*Math.cos(val) + op.z*Math.sin(val)
+        z = op.z*Math.cos(val) - op.x*Math.sin(val)
+        op.x = x
+        op.z = z
 
     render: () ->
         @renderer.render(@scene, @camera)

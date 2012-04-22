@@ -1,7 +1,10 @@
 class World
     @RADIUS = 50
     @CIRCUMFERENCE = 20
-    @HEIGHT = 10
+    @HEIGHT = 5
+    @ANGLE = Math.TAU / @CIRCUMFERENCE
+    @SIZE = @ANGLE * @RADIUS
+    @CENTER = new THREE.Vector3(0,0,0)
 
     constructor: () ->
         @createMesh()
@@ -13,7 +16,7 @@ class World
             for c in row
                 line += if c.constructor == PopulatedCell then 1 else 0
             console.debug line
-
+            
     createEmptyWorld: () ->
         @world = []
         createRow = (r)=>

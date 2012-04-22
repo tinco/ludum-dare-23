@@ -3,7 +3,7 @@ class Keyboard
         @graphics = graphics
         @game = game
         @center = new THREE.Vector3(0,0,0)
-        @angle = Math.TAU / 20
+        @angle = Math.TAU / World.CIRCUMFERENCE
         @target
         @speed = 0
         @dir
