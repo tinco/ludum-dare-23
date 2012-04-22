@@ -17,7 +17,7 @@ class Graphics
     viewAngle: 45
     speed: 1/10
     updateGraphics: ->
-        @sphere.rotation.y = @frame / 720 * Math.TAU
+        
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
@@ -72,7 +72,6 @@ class Graphics
         
         # add the sphere to the scene
         scene.add(sphere)
-        scene.add(origin)
 
         #create the sphere's material
         sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC00AA)
