@@ -1,22 +1,29 @@
 class Cell
-    @Empty = 0
-    @Populated = 1
+    @Water = 0
+    @Earth = 1
+    @Grass = 2
+    @Forest =3
+    @Life = 4
+    
 
     constructor: (world, r, c, kind) ->
         @world = world
         @row = r
         @column = c
-        @kind = kind || Cell.Empty
+        @age = 0
+        @kind = kind || Cell.Water
         @newKind = @kind
         @mesh = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE))
+        @materials = {}
+        @materials[Cell.Water] = new THREE.MeshLambertMaterial(color: 0x00BFFF)
+        @materials[Cell.Earth] = new THREE.MeshLambertMaterial(color: 0xA0522D)
+        @materials[Cell.Grass] = new THREE.MeshLambertMaterial(color: 0x7CFC00)
+        @materials[Cell.Forest] = new THREE.MeshLambertMaterial(color: 0x006400)
+        @materials[Cell.Life] = new THREE.MeshLambertMaterial(color: 0xFFA500)
         @updateMesh()
 
     updateMesh: () ->
-        materials = {}
-        materials[Cell.Empty] = new THREE.MeshLambertMaterial(color: 0xCC00FF)
-        materials[Cell.Populated] = new THREE.MeshLambertMaterial(color: 0xCCFF00)
-
-        @mesh.material = materials[@kind]
+        @mesh.material = @materials[@kind]
 
     neighbours: () ->
         left = @column - 1
@@ -49,18 +56,42 @@ class Cell
         neighbours
 
     step: () ->
+        n = @neighbours()
+        age = 0
+        if n[Cell.Life]?.length > 0
+            for c in n[Cell.Life] 
+                if c.age > age
+                    age = c.age
+                
+        if @kind == Cell.Life
+            @age++
+        else
+            @age = 0
         switch @kind
-            when Cell.Empty
-                if @neighbours()[Cell.Populated]?.length == 3
-                    @newKind = Cell.Populated
-            when Cell.Populated
-                neighbours = @neighbours()
-                if neighbours[Cell.Populated]?.length > 3
-                    @newKind = Cell.Empty
-                else if neighbours[Cell.Populated]?.length < 2
-                    @newKind = Cell.Empty
-                else if not neighbours[Cell.Populated]?
-                    @newKind = Cell.Empty
+            when Cell.Water
+                if n[Cell.Life]?.length > 0 and age > 1
+                    @newKind = Cell.Earth
+            when Cell.Earth
+                if n[Cell.Forest]?.length > 0 and n[Cell.Life]?.length > 0
+                    @newKind = Cell.Life
+                else if n[Cell.Water]?.length > 0
+                    @newKind = Cell.Grass
+            when Cell.Grass
+                if n[Cell.Water] is undefined
+                    @newKind = Cell.Earth
+                else if n[Cell.Life]?.length > 0 and age > 1
+                    @newKind = Cell.Forest
+                else if n[Cell.Forest]?.length > 1
+                    @newKind = Cell.Forest
+            when Cell.Forest
+                if n[Cell.Life]?.length > 0
+                    @newKind = Cell.Water
+                if n[Cell.Forest]?.length > 1 and n[Cell.Water]?.length > 1
+                    @newKind = Cell.Life
+            when Cell.Life
+                if n[Cell.Forest] is undefined
+                    @newKind = Cell.Grass
+            
 
     finishStep: () ->
         if @kind != @newKind

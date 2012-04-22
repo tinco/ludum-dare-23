@@ -9,12 +9,13 @@ class World
     constructor: () ->
         @createMesh()
         @world = @createEmptyWorld()
-        @loadLine()
+        @loadTerrain()
 
-    loadLine: () ->
-        @populateCell(1,1)
-        @populateCell(1,2)
-        @populateCell(1,3)
+    loadTerrain: () ->
+        @earthify(i,j) for i in [0..7] for j in [0..7]
+        @seedify(i,j) for i in [1..2] for j in [1..2]
+        @seedify(i,j) for i in [5..6] for j in [5..6]
+        
 
     debug: (world) ->
         for row in (world || @world)
@@ -39,9 +40,14 @@ class World
             for cell in row
                 cell.finishStep()
 
-    populateCell: (r,c) ->
-        p = new Cell(@world, r, c, Cell.Populated)
+    earthify: (r,c) ->
+        p = new Cell(@world, r, c, Cell.Earth)
         @world[r][c] = p
+        
+    seedify: (r, c) ->
+        p = new Cell(@world, r, c, Cell.Forest)
+        @world[r][c] = p
+        
 
     createMesh: () ->
         # create the sphere's material
