@@ -7,15 +7,15 @@ class Graphics
         @viewport.width = document.body.clientWidth
         @viewport.height = document.body.clientHeight
         @cells = []
-        
+
     initialize: () ->
         @setup()
-        @loadScene()        
-        
+        @loadScene()
+
     start: () ->
         @initialize()
         @loop()
-        
+
     loop: () ->
         @updateGraphics()
         TWEEN.update()
@@ -23,14 +23,14 @@ class Graphics
         @frame += 1
         t = this
         requestAnimationFrame(() -> t.loop())
-        
+
     viewport: {width: 400, height: 300}
     focus: {near : 0.1, far : 10000}
     viewAngle: 45
     speed: 1/10
-    
+
     updateGraphics: ->
-    
+
     setup: () ->
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
@@ -50,28 +50,35 @@ class Graphics
         # attach the render-supplied DOM element
         @container.append(@renderer.domElement)
 
-    addToScene: (x,y, c) -> 
-        p = c.mesh
-        p.position.x = 0
-        p.position.y = 0
-        p.position.z = 1
-        @rotX(p.position, y * World.ANGLE)
-        @rotY(p.position, x * World.ANGLE)
-        p.position.normalize().multiplyScalar(World.RADIUS+World.SIZE/2)
-        # HOLY SHIT UGLY HACK, but it works
-        @nastyCamera.position = p.position.clone()
-        @nastyCamera.lookAt(World.CENTER)
-        p.rotation = @nastyCamera.rotation.clone()
-        @scene.add(p)
-        @cells.push c
+    addToScene: (cell) ->
+        cell.mesh.position = @calculatePosition(cell.row, cell.column, World.RADIUS + World.SIZE / 2)
+        cell.mesh.rotation = @calculateRotation(cell.mesh.position)
+        @scene.add(cell.mesh)
+        @cells.push cell
 
-    rotX: (op,val) ->
+    calculatePosition: (r,c, distance) ->
+        newPosition = new THREE.Vector3()
+        newPosition.x = 0
+        newPosition.y = 0
+        newPosition.z = 1
+        @rotY(newPosition, (r - (World.HEIGHT - 1) / 2) * World.ANGLE)
+        @rotX(newPosition, c * World.ANGLE)
+        newPosition.normalize().multiplyScalar(distance)
+        newPosition
+
+    calculateRotation: (position) ->
+        # HOLY SHIT UGLY HACK, but it works
+        @nastyCamera.position = position.clone()
+        @nastyCamera.lookAt(World.CENTER)
+        @nastyCamera.rotation.clone()
+
+    rotY: (op,val) ->
         y = op.y*Math.cos(val) - op.z*Math.sin(val)
         z = op.y*Math.sin(val) + op.z*Math.cos(val)
         op.y = y
         op.z = z
 
-    rotY: (op,val) ->
+    rotX: (op,val) ->
         x = op.x*Math.cos(val) + op.z*Math.sin(val)
         z = op.z*Math.cos(val) - op.x*Math.sin(val)
         op.x = x
@@ -106,4 +113,4 @@ class Graphics
         @cells = []
         for row,r in @game.world.world
             for cell,c in row
-                @addToScene(c,r - (World.HEIGHT - 1) / 2,cell)
+                @addToScene(cell)

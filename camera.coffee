@@ -5,9 +5,10 @@ class Camera extends THREE.PerspectiveCamera
     constructor: (game, rest...) ->
         super rest...
         @game = game
-        @position.z = Camera.DISTANCE
-        @row = 0
-        @column = 0
+        @column = 0 #(World.CIRCUMFERENCE - 1) / 2
+        @row = (World.HEIGHT - 1) / 2
+        @position = @game.graphics.calculatePosition(@row, @column, Camera.DISTANCE)
+        @lookAt(World.CENTER)
 
     moveLeft: () -> @moveTo @row, @column - 1
     moveRight: () -> @moveTo @row, @column + 1
@@ -23,7 +24,7 @@ class Camera extends THREE.PerspectiveCamera
         @row = r
         @column = c
 
-        newPosition = @calculatePosition(r,c)
+        newPosition = @game.graphics.calculatePosition(r,c, Camera.DISTANCE)
         @currentTween?.stop()
         @currentTween = new TWEEN.Tween(@position).to(newPosition,150)
             .onUpdate(=>@lookAt(World.CENTER))
