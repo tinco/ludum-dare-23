@@ -14,3 +14,10 @@ class Keyboard
         key 's', => @graphics.camera.moveDown()
         key 'd', => @graphics.camera.moveRight()
         key 'p', => @game.pause = !@game.pause
+
+        key 'up', => @game.onUp?()
+        key 'down', => @game.onDown?()
+        key 'left', => @game.onLeft?()
+        key 'right', => @game.onRight?()
+
+        key 'space', => @game.onSpace?()

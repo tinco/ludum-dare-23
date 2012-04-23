@@ -16,3 +16,30 @@ h1 {
     right: 0;
     overflow: hidden;
 }
+
+#tileMenu {
+    font-size: 2em;
+    position: absolute;
+    height: 10em;
+    top: 50% - 10em;
+    right: 0;
+    display: block;
+    margin-right: 2em;
+    list-style-type: none;
+}
+
+#tileMenu > li {
+    height: 1em;
+    margin-top: ..25em;
+    margin-bottom: .25em;
+    padding-top: ..25em;
+    padding-bottom: .25em;
+    border: 1px solid white;
+    padding-left: 1em;
+    padding-right: 1em;
+    text-align: center;
+}
+
+#tileMenu > li.selected {
+    background-color: green;
+}

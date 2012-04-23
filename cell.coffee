@@ -9,6 +9,15 @@ class Cell
     @Forest =3
     @Life = 4
 
+    @Kinds =
+        0: 'Water',
+        1: 'Earth',
+        2: 'Grass',
+        3: 'Forest',
+        4: 'Life'
+
+    @KindsAmount = 5
+
     constructor: (world, r, c, kind) ->
         @world = world
         @row = r
