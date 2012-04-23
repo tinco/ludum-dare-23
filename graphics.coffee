@@ -4,8 +4,6 @@ class Graphics
         @game = game
         @nastyCamera = new THREE.Camera()
         @frame = 0
-        @viewport.width = document.body.clientWidth
-        @viewport.height = document.body.clientHeight
         @cells = []
 
     initialize: () ->
@@ -24,7 +22,6 @@ class Graphics
         t = this
         requestAnimationFrame(() -> t.loop())
 
-    viewport: {width: 400, height: 300}
     focus: {near : 0.1, far : 10000}
     viewAngle: 45
     speed: 1/10
@@ -35,6 +32,9 @@ class Graphics
         # get the DOM element to attach to
         # - assume we've got jQuery to hand
         @container = $('#container')
+        @viewport = {}
+        @viewport.width = @container.width()
+        @viewport.height = @container.height()
 
         # create a WebGL renderer, camera
         # and a scene
