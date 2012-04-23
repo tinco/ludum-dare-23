@@ -93,17 +93,57 @@ class Graphics
 
         # add the camera to the scene
         scene.add(@camera)
+        
+        sunMaterial = new THREE.MeshLambertMaterial(color: 0xDDDD33)
+        
+        sun = new THREE.Mesh(
+            new THREE.SphereGeometry(
+                World.RADIUS*2,
+                100,
+                100),
+                sunMaterial);
+        sun.position.x = 10
+        sun.position.y = 50
+        sun.position.z = 2000
+        
+        texture = THREE.ImageUtils.loadTexture('assets/moontex.jpg')
+        moonMaterial = new THREE.MeshBasicMaterial(map: texture)
+        
+        moon = new THREE.Mesh(
+            new THREE.SphereGeometry(
+                World.RADIUS,
+                100,
+                100),
+                moonMaterial);
+        moon.position.x = 10
+        moon.position.y = 50
+        moon.position.z = -500
+        
+        # create a point light
+        moonLight = new THREE.PointLight(0xFFFFFF,0.4);
+        # set its positionaa
+        moonLight.position.x = 0
+        moonLight.position.y = 50
+        moonLight.position.z = -450
 
-        #create a point light
-        pointLight = new THREE.PointLight(0xFFFFFF);
-
+        # create a point light
+        spotLight = new THREE.SpotLight(0xFFC0B0, 3, 300, Math.TAU / 8);
         # set its position
-        pointLight.position.x = 10
-        pointLight.position.y = 50
-        pointLight.position.z = 130
-
+        spotLight.position.x = 0
+        spotLight.position.y = 50
+        spotLight.position.z = 1700
+        spotLight.lookAt(sun.position)
+        
+        pointLight = new THREE.PointLight(0xFFFFFF,0.8);
+        pointLight.position = spotLight.position.clone()
+        
         # add to the scene
+        scene.add(moon)
+        scene.add(moonLight)
+        scene.add(spotLight)
         scene.add(pointLight)
+        
+        scene.add(sun)
         @scene = scene
         @scene.add(@game.world.mesh)
         @loadCells()

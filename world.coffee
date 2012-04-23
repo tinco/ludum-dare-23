@@ -15,16 +15,6 @@ class World
 
     initialize: () ->
         @world = @createEmptyWorld()
-        #@earthify(i,j) for i in [0..7] for j in [0..7]
-        #@seedify(i,j) for i in [1..2] for j in [1..2]
-        #@seedify(i,j) for i in [5..6] for j in [5..6]
-
-        #@seedify(0,4)
-        #@earthify(0,5)
-        #@seedify(1,5)
-        #@seedify(1,6)
-        #@earthify(1,7)
-        #@live(1,4)
 
     debug: (world) ->
         for row in (world || @world)
@@ -61,17 +51,6 @@ class World
                     @alive.push cell
         @finished = @alive.length == 0
         @maxAlive = @alive.length if @alive.length > @maxAlive
-
-    earthify: (c,r) ->
-        p = new Cell(@world, r, c, Cell.Earth)
-        @world[r][c] = p
-
-    seedify: (c, r) ->
-        p = new Cell(@world, r, c, Cell.Forest)
-        @world[r][c] = p
-    live: (c, r) ->
-        p = new Cell(@world, r, c, Cell.Life)
-        @world[r][c] = p
 
     changeTile: (r, c, kind) ->
         cell = @world[r][c]
