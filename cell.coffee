@@ -97,9 +97,8 @@ class Cell
                 else if n[Cell.Water] is undefined
                     @newKind = Cell.Earth
             when Cell.Forest
-                if n[Cell.Life]?.length > 0 and age > 3
+                if n[Cell.Life]?.length > 0 and age > 2
                     @newKind = Cell.Life
-                    #@age = age
             when Cell.Life
                 if n[Cell.Water] is undefined
                     @newKind = Cell.Earth

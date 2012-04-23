@@ -63,7 +63,7 @@ class World
         @world[r][c] = p
 
     changeTile: (r, c, kind) ->
-        @world[r][c].kind = kind
+        @world[r][c].kind = @world[r][c].newKind = kind
         @world[r][c].updateMesh()
 
     createMesh: () ->
