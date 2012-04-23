@@ -12,7 +12,7 @@ class Graphics
 
     start: () ->
         @initialize()
-        @camera.showSelection()
+        @camera.updateSelectionPosition()
         @loop()
 
     loop: () ->

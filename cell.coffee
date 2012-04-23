@@ -1,7 +1,7 @@
 class Cell
     @Size = World.ANGLE * World.RADIUS
-    @Distance = World.RADIUS + World.SIZE / 2
     @Height = 1
+    @Distance = World.RADIUS + Cell.Height / 2
     @AgeMaximum = 20
 
     @Water = 0
@@ -20,6 +20,9 @@ class Cell
     @KindsAmount = 5
 
     constructor: (world, r, c, kind) ->
+        distanceFromCenter = Math.abs((World.HEIGHT - 1) / 2 - r)
+        tempRadius = World.RADIUS * Math.sin(Math.TAU / 4 - distanceFromCenter * World.ANGLE)
+        @length = World.ANGLE * tempRadius
         @world = world
         @row = r
         @column = c
@@ -27,7 +30,7 @@ class Cell
         @kind = kind || Cell.Water
         @newKind = @kind
         @mesh = new THREE.Mesh(
-            new THREE.CubeGeometry(Cell.Size,
+            new THREE.CubeGeometry(@length,
                                    Cell.Size,
                                    Cell.Height))
         @materials = {}
