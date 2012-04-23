@@ -57,5 +57,4 @@ class Game
         if !@pause
             @world.step()
             if @world.finished
-                @world.initialize()
-                @graphics.loadCells()
+                @pause = true
