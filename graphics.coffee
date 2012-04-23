@@ -115,16 +115,16 @@ class Graphics
                 100,
                 100),
                 moonMaterial);
-        moon.position.x = 10
-        moon.position.y = 50
-        moon.position.z = -500
+        moon.position.x = 200
+        moon.position.y = 100
+        moon.position.z = -400
         
         # create a point light
         moonLight = new THREE.PointLight(0xFFFFFF,0.4);
-        # set its positionaa
-        moonLight.position.x = 0
+        # set its position
+        moonLight.position.x = 150
         moonLight.position.y = 50
-        moonLight.position.z = -450
+        moonLight.position.z = -350
 
         # create a point light
         spotLight = new THREE.SpotLight(0xFFC0B0, 3, 300, Math.TAU / 8);
@@ -134,7 +134,10 @@ class Graphics
         spotLight.position.z = 1700
         spotLight.lookAt(sun.position)
         
-        pointLight = new THREE.PointLight(0xFFFFFF,0.8);
+        pointLight = new THREE.PointLight(0xFFFFFF,0.8)
+        faintLight = new THREE.PointLight(0xFFFFFF,0.2)
+        faintLight.position.x = -200
+        
         pointLight.position = spotLight.position.clone()
         
         # add to the scene
@@ -142,6 +145,13 @@ class Graphics
         scene.add(moonLight)
         scene.add(spotLight)
         scene.add(pointLight)
+        scene.add(faintLight)
+        
+        startex = THREE.ImageUtils.loadTexture('assets/startex.jpg')
+        starMaterial = new THREE.MeshBasicMaterial(map: startex)
+        stars = new THREE.Mesh(new THREE.SphereGeometry(2300,100,100), starMaterial)
+        stars.flipSided = true
+        scene.add(stars)
         
         scene.add(sun)
         @scene = scene

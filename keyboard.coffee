@@ -16,6 +16,11 @@ class Keyboard
         key 'left','menu', => @game.onLeft?()
         key 'right','menu', => @game.onRight?()
         key 'space','menu', => @game.onSpace?()
+        key '1','menu', => @game.selectTile(0)
+        key '2','menu', => @game.selectTile(1)
+        key '3','menu', => @game.selectTile(2)
+        key '4','menu', => @game.selectTile(3)
+        key '5','menu', => @game.selectTile(4)
 
         key 'w', => @graphics.camera.moveUp()
         key 'a', => @graphics.camera.moveLeft()

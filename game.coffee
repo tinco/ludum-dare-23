@@ -3,6 +3,7 @@ class Game
         @frame = 0
         @graphics = new Graphics(@)
         @keyboard = new Keyboard(@,@graphics)
+        @audio = new Audio()
         @timeAtLastFrame = new Date().getTime()
         @leftover = 0.0
         @fps = 30
