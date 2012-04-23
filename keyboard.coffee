@@ -13,7 +13,9 @@ class Keyboard
         key 'a', => @graphics.camera.moveLeft()
         key 's', => @graphics.camera.moveDown()
         key 'd', => @graphics.camera.moveRight()
+
         key 'p', => @game.pause = !@game.pause
+        key 'r', => @game.reset()
 
         key 'up', => @game.onUp?()
         key 'down', => @game.onDown?()

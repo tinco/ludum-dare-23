@@ -39,6 +39,11 @@ class World
             row
         (createRow(r) for r in [0..(World.HEIGHT - 1)])
 
+    reset: () ->
+        for row,r in @world
+            for cell,c in row
+                @changeTile(r,c, Cell.Water)
+
     step: () ->
         @alive = []
         for row in @world
@@ -63,8 +68,11 @@ class World
         @world[r][c] = p
 
     changeTile: (r, c, kind) ->
-        @world[r][c].kind = @world[r][c].newKind = kind
-        @world[r][c].updateMesh()
+        cell = @world[r][c]
+        dirty = kind != cell.kind
+        if dirty
+            @world[r][c].kind = @world[r][c].newKind = kind
+            @world[r][c].updateMesh()
 
     createMesh: () ->
         # create the sphere's material
