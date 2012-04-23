@@ -84,7 +84,7 @@ class Cell
             @age = 0
         switch @kind
             when Cell.Water
-                if n[Cell.Life]?.length > 0 and age > 2
+                if n[Cell.Life]?.length > 0 and age > 4
                     @newKind = Cell.Earth
             when Cell.Earth
                 if n[Cell.Water]?.length > 0
