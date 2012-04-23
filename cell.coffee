@@ -1,4 +1,6 @@
 class Cell
+    @Size = World.ANGLE * World.RADIUS
+    @Height = 1
     @Water = 0
     @Earth = 1
     @Grass = 2
@@ -12,7 +14,10 @@ class Cell
         @age = 0
         @kind = kind || Cell.Water
         @newKind = @kind
-        @mesh = new THREE.Mesh(new THREE.CubeGeometry(World.SIZE,World.SIZE,World.SIZE))
+        @mesh = new THREE.Mesh(
+            new THREE.CubeGeometry(Cell.Size,
+                                   Cell.Size,
+                                   Cell.Height))
         @materials = {}
         @materials[Cell.Water] = new THREE.MeshLambertMaterial(color: 0x00BFFF)
         @materials[Cell.Earth] = new THREE.MeshLambertMaterial(color: 0xA0522D)

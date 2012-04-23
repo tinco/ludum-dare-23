@@ -64,7 +64,7 @@ class World
 
     createMesh: () ->
         # create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0xCC0000)
+        sphereMaterial = new THREE.MeshLambertMaterial(color: 0x000000)
 
         # create a new mesh with
         # sphere geometry - we will cover
