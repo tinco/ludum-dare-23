@@ -49,7 +49,7 @@ class World
                 cell.finishStep()
                 if cell.kind == Cell.Life
                     @alive.push cell
-        @finished = @alive.length == 0        
+        @finished = @alive.length == 0
 
     earthify: (c,r) ->
         p = new Cell(@world, r, c, Cell.Earth)
