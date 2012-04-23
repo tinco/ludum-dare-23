@@ -10,6 +10,7 @@ h1 {
 }
 
 #container {
+    z-index: -1;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -30,6 +31,7 @@ h1 {
 }
 
 #tileMenu > li, #score > li {
+    background-color: black;
     height: 1em;
     margin-top: ..25em;
     margin-bottom: .25em;
@@ -55,6 +57,7 @@ h1 {
 }
 
 #finish > div {
+    background-color: black;
     border: 1px solid white;
     text-align: center;
     display: inline-block;

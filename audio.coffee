@@ -2,10 +2,10 @@ class Audio
     constructor: () ->
         @context = new webkitAudioContext()
         @sounds =
-            rimshot: 
+            rimshot:
                 url: "assets/rimshot.wav"
                 buffer: null
-            kick: 
+            kick:
                 url: "assets/kick.wav"
                 buffer: null
             snare:
@@ -14,25 +14,34 @@ class Audio
             hihat:
                 url: "assets/hihat.wav"
                 buffer: null
-            
         @loadSounds()
-    
+
     loadSounds: () ->
+        toDownload = []
         for name,sound of @sounds
-            request = new XMLHttpRequest()
-            request.open('GET', sound.url, true)
-            request.responseType = "arraybuffer"
-            request.onload = () =>
-                @context.decodeAudioData(request.response, 
-                    (buffer) -> sound.buffer = buffer)
-            request.send()
+            toDownload.push sound
+
+        download = () =>
+            newSound = toDownload.shift()
+            if newSound?
+                request = new XMLHttpRequest()
+                request.open('GET', newSound.url, true)
+                request.responseType = "arraybuffer"
+                request.onload = () =>
+                    @context.decodeAudioData(request.response,
+                        (buffer) ->
+                            newSound.buffer = buffer
+                            download()
+                    )
+                request.send()
+        download()
 
     playSound: (name, time) ->
         @source = @context.createBufferSource()
         @source.buffer = @sounds[name].buffer
         @source.connect(@context.destination)
         @source.noteOn(time)
-        
+
     beat: () ->
         startTime = @context.currentTime + 0.100
         tempo = 80
