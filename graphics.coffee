@@ -149,7 +149,12 @@ class Graphics
         scene.add(pointLight)
         scene.add(faintLight)
         
-        startex = THREE.ImageUtils.loadTexture('assets/startex.jpg')
+        startex = THREE.ImageUtils.loadTexture('assets/stars.png')
+        startex.wrapS = THREE.RepeatWrapping;
+        startex.wrapT = THREE.RepeatWrapping;
+        startex.repeat.x = 10;
+        startex.repeat.y = 10;
+
         starMaterial = new THREE.MeshBasicMaterial(map: startex)
         stars = new THREE.Mesh(new THREE.SphereGeometry(2300,100,100), starMaterial)
         stars.flipSided = true
