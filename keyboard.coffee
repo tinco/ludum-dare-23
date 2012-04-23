@@ -16,6 +16,7 @@ class Keyboard
         key 'left','menu', => @game.onLeft?()
         key 'right','menu', => @game.onRight?()
         key 'space','menu', => @game.onSpace?()
+        key 'c','menu', => @game.world.reset()
 
         key 'w', => @graphics.camera.moveUp()
         key 'a', => @graphics.camera.moveLeft()

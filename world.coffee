@@ -31,6 +31,16 @@ class World
             row
         (createRow(r) for r in [0..(World.HEIGHT - 1)])
 
+    saveState: () ->
+        state = []
+        state.push(((if cell.kind == Cell.Life then Cell.Earth else cell.kind) for cell,c in row)) for row,r in @world
+        state
+
+    loadState: (state) ->
+        for row, r in state
+            for kind, c in row
+                @changeTile(r,c,kind)
+
     reset: () ->
         @maxAlive = 0
         @maxAge = 0
