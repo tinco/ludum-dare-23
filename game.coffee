@@ -22,6 +22,7 @@ class Game
         @loop()
 
     gameMode: () ->
+        @savedState = @world.saveState()
         $('#tileMenu').hide()
         $('#score').show()
         @keyboard.gameContext()
@@ -32,9 +33,14 @@ class Game
         $('#tileMenu').show()
         @keyboard.menuContext()
 
+    endMode:() ->
+        $('#score').hide()
+        $('#tileMenu').hide()
+
     restart: () ->
-        @world.reset()
+        $('#finish').hide()
         @seedMode()
+        @world.loadState @savedState
 
     gameStep: () ->
         timeAtThisFrame = new Date().getTime()
@@ -77,8 +83,16 @@ class Game
         if @selectedTile == Cell.Life
             @gameMode()
 
+    finish: () ->
+        @world.finished = true
+
+    showFinishMenu: () ->
+        $('#finish').show()
+
     updateLogic: () ->
+        if @world.finished
+            @pause = true
+            @showFinishMenu()
+            @world.finished = false
         if !@pause
             @world.step()
-            if @world.finished
-                @pause = true

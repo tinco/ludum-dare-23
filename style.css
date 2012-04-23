@@ -2,6 +2,7 @@ body {
     font-family: arial;
     background-color: black;
     color: white;
+    overflow: hidden;
 }
 
 h1 {
@@ -18,12 +19,12 @@ h1 {
 }
 
 #tileMenu , #score {
+    display: none;
     font-size: 2em;
     position: absolute;
     height: 10em;
     top: 50% - 10em;
     right: 0;
-    display: block;
     margin-right: 2em;
     list-style-type: none;
 }
@@ -42,4 +43,20 @@ h1 {
 
 #tileMenu > li.selected {
     background-color: green;
+}
+
+#finish {
+    display: none;
+    text-align: center;
+    bottom: 0;
+    margin-bottom: 2em;
+    position: absolute;
+    width: 100%;
+}
+
+#finish > div {
+    border: 1px solid white;
+    text-align: center;
+    display: inline-block;
+    width: 20em;
 }
