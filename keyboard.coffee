@@ -10,6 +10,7 @@ class Keyboard
 
         key 'p','game', => @game.pause = !@game.pause
         key 'r','game', => @game.restart()
+        key 'f','game', => @game.finish()
 
         key 'up','menu', => @game.onUp?()
         key 'down','menu', => @game.onDown?()

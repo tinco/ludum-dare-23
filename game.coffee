@@ -37,6 +37,7 @@ class Game
         $('#tileMenu').hide()
 
     restart: () ->
+        $('#finish').hide()
         @seedMode()
         @world.loadState @savedState
 
@@ -81,8 +82,16 @@ class Game
         if @selectedTile == Cell.Life
             @gameMode()
 
+    finish: () ->
+        @world.finished = true
+
+    showFinishMenu: () ->
+        $('#finish').show()
+
     updateLogic: () ->
+        if @world.finished
+            @pause = true
+            @showFinishMenu()
+            @world.finished = false
         if !@pause
             @world.step()
-            if @world.finished
-                @pause = true
