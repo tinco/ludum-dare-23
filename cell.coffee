@@ -1,6 +1,8 @@
 class Cell
     @Size = World.ANGLE * World.RADIUS
+    @Distance = World.RADIUS + World.SIZE / 2
     @Height = 1
+
     @Water = 0
     @Earth = 1
     @Grass = 2

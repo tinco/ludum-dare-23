@@ -12,6 +12,7 @@ class Graphics
 
     start: () ->
         @initialize()
+        @camera.showSelection()
         @loop()
 
     loop: () ->
@@ -51,7 +52,7 @@ class Graphics
         @container.append(@renderer.domElement)
 
     addToScene: (cell) ->
-        cell.mesh.position = @calculatePosition(cell.row, cell.column, World.RADIUS + World.SIZE / 2)
+        cell.mesh.position = @calculatePosition(cell.row, cell.column, Cell.Distance)
         cell.mesh.rotation = @calculateRotation(cell.mesh.position)
         @scene.add(cell.mesh)
         @cells.push cell
