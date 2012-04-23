@@ -10,19 +10,14 @@ class Camera extends THREE.PerspectiveCamera
         @row = (World.HEIGHT - 1) / 2
         @position = @graphics.calculatePosition(@row, @column, Camera.DISTANCE)
         @lookAt(World.CENTER)
-        @selectionMesh = new THREE.Mesh(
-            new THREE.CubeGeometry(Cell.Size,Cell.Size,Cell.Size))
-        @updateSelectionPosition()
 
     updateSelectionPosition: () ->
-        @selectionMesh.position = @graphics.calculatePosition(@row, @column, Cell.Distance)
-        @selectionMesh.rotation = @graphics.calculateRotation(@selectionMesh.position)
-
-    showSelection: () ->
-        @graphics.scene.add(@selectionMesh)
-
-    hideSelection: () ->
-        @graphics.scene.remove(@selectionMesh)
+        @graphics.scene?.remove(@selectionMesh)
+        @selectionMesh = new THREE.Mesh(
+            new THREE.CubeGeometry(@game.world.world[@row][@column].length,Cell.Size,Cell.Height+1),new THREE.MeshBasicMaterial(color:0xFFFFFF, wireframe:!0))
+        @selectionMesh.position = @game.world.world[@row][@column].mesh.position
+        @selectionMesh.rotation = @game.world.world[@row][@column].mesh.rotation
+        @graphics.scene?.add(@selectionMesh)
 
     moveLeft: () -> @moveTo @row, @column - 1
     moveRight: () -> @moveTo @row, @column + 1
