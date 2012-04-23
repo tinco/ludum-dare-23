@@ -21,6 +21,9 @@ class Game
         @started = true
         @loop()
 
+    reset: () ->
+        @world.reset()
+
     gameStep: () ->
         timeAtThisFrame = new Date().getTime()
         timeSinceLastDoLogic = (timeAtThisFrame - @timeAtLastFrame) + @leftover;
