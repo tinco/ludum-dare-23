@@ -20,8 +20,7 @@ class Graphics
         TWEEN.update()
         @renderer.render(@scene, @camera)
         @frame += 1
-        t = this
-        requestAnimationFrame(() -> t.loop())
+        requestAnimationFrame(() => @loop())
 
     focus: {near : 0.1, far : 10000}
     viewAngle: 45
@@ -106,8 +105,11 @@ class Graphics
         sun.position.y = 50
         sun.position.z = 2000
         
-        texture = THREE.ImageUtils.loadTexture('assets/moontex.jpg')
-        moonMaterial = new THREE.MeshBasicMaterial(map: texture)
+        texture = THREE.ImageUtils.loadTexture('assets/moon.png')
+        moonMaterial = new THREE.MeshLambertMaterial
+            map: texture,
+            reflectivity: 0,
+            specular: 0
         
         moon = new THREE.Mesh(
             new THREE.SphereGeometry(

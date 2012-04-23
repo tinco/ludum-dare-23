@@ -71,7 +71,8 @@ class World
 
     createMesh: () ->
         # create the sphere's material
-        sphereMaterial = new THREE.MeshLambertMaterial(color: 0x000000)
+        texture = THREE.ImageUtils.loadTexture('assets/poles.png')
+        sphereMaterial = new THREE.MeshLambertMaterial(map: texture)
 
         # create a new mesh with
         # sphere geometry - we will cover
