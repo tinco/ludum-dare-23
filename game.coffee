@@ -16,13 +16,24 @@ class Game
     start: () ->
         @world = new World()
         @graphics.start(@world)
-        @keyboard.start()
         @populateMenu()
-        @started = true
+        @seedMode()
         @loop()
 
-    reset: () ->
+    gameMode: () ->
+        $('#tileMenu').hide()
+        $('#score').show()
+        @keyboard.gameContext()
+        @pause = false
+
+    seedMode:() ->
+        $('#score').hide()
+        $('#tileMenu').show()
+        @keyboard.menuContext()
+
+    restart: () ->
         @world.reset()
+        @seedMode()
 
     gameStep: () ->
         timeAtThisFrame = new Date().getTime()
@@ -31,11 +42,18 @@ class Game
         i = 0
         while i < catchUpFrameCount
             @updateLogic()
+            @updateScore()
             @frame += 1
             i++
 
         @leftover = timeSinceLastDoLogic - (catchUpFrameCount * @step);
         @timeAtLastFrame = timeAtThisFrame;
+
+    updateScore: () ->
+        score = $('#score')
+        score.find('.alive').text(@world.maxAlive)
+        score.find('.age').text(@world.maxAge)
+        score.find('.total').text(@world.maxAlive * @world.maxAge)
 
     populateMenu: () ->
         for kind, name of Cell.Kinds
@@ -55,6 +73,8 @@ class Game
 
     onSpace: () ->
         @world.changeTile(@graphics.camera.row, @graphics.camera.column, @selectedTile)
+        if @selectedTile == Cell.Life
+            @gameMode()
 
     updateLogic: () ->
         if !@pause

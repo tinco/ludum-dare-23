@@ -8,18 +8,19 @@ class Keyboard
         @speed = 0
         @dir
 
-    start: () ->
+        key 'p','game', => @game.pause = !@game.pause
+        key 'r','game', => @game.restart()
+
+        key 'up','menu', => @game.onUp?()
+        key 'down','menu', => @game.onDown?()
+        key 'left','menu', => @game.onLeft?()
+        key 'right','menu', => @game.onRight?()
+        key 'space','menu', => @game.onSpace?()
+
         key 'w', => @graphics.camera.moveUp()
         key 'a', => @graphics.camera.moveLeft()
         key 's', => @graphics.camera.moveDown()
         key 'd', => @graphics.camera.moveRight()
 
-        key 'p', => @game.pause = !@game.pause
-        key 'r', => @game.reset()
-
-        key 'up', => @game.onUp?()
-        key 'down', => @game.onDown?()
-        key 'left', => @game.onLeft?()
-        key 'right', => @game.onRight?()
-
-        key 'space', => @game.onSpace?()
+     gameContext: -> key.setScope('game')
+     menuContext: -> key.setScope('menu')

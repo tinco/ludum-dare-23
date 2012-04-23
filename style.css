@@ -17,7 +17,7 @@ h1 {
     overflow: hidden;
 }
 
-#tileMenu {
+#tileMenu , #score {
     font-size: 2em;
     position: absolute;
     height: 10em;
@@ -28,7 +28,7 @@ h1 {
     list-style-type: none;
 }
 
-#tileMenu > li {
+#tileMenu > li, #score > li {
     height: 1em;
     margin-top: ..25em;
     margin-bottom: .25em;

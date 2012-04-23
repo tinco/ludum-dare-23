@@ -2,11 +2,12 @@ class Cell
     @Size = World.ANGLE * World.RADIUS
     @Distance = World.RADIUS + World.SIZE / 2
     @Height = 1
+    @AgeMaximum = 20
 
     @Water = 0
     @Earth = 1
     @Grass = 2
-    @Forest =3
+    @Forest = 3
     @Life = 4
 
     @Kinds =
@@ -74,14 +75,15 @@ class Cell
         n = @neighbours()
         age = 0
         if n[Cell.Life]?.length > 0
-            for c in n[Cell.Life] 
+            for c in n[Cell.Life]
                 if c.age > age
                     age = c.age
-                
+
         if @kind == Cell.Life
-            @age++
+            if @age < Cell.AgeMaximum then @age++
         else
             @age = 0
+
         switch @kind
             when Cell.Water
                 if n[Cell.Life]?.length > 0 and age > 2
@@ -102,9 +104,8 @@ class Cell
             when Cell.Life
                 if n[Cell.Water] is undefined
                     @newKind = Cell.Earth
-                if n[Cell.Forest] is undefined 
+                if n[Cell.Forest] is undefined
                     @newKind = Cell.Grass
-            
 
     finishStep: () ->
         if @kind != @newKind

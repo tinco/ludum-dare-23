@@ -10,6 +10,8 @@ class World
         @createMesh()
         @initialize()
         @alive = []
+        @maxAlive = 0
+        @maxAge = 0
 
     initialize: () ->
         @world = @createEmptyWorld()
@@ -40,6 +42,8 @@ class World
         (createRow(r) for r in [0..(World.HEIGHT - 1)])
 
     reset: () ->
+        @maxAlive = 0
+        @maxAge = 0
         for row,r in @world
             for cell,c in row
                 @changeTile(r,c, Cell.Water)
@@ -53,8 +57,10 @@ class World
             for cell in row
                 cell.finishStep()
                 if cell.kind == Cell.Life
+                    @maxAge = cell.age if cell.age > @maxAge
                     @alive.push cell
         @finished = @alive.length == 0
+        @maxAlive = @alive.length if @alive.length > @maxAlive
 
     earthify: (c,r) ->
         p = new Cell(@world, r, c, Cell.Earth)
