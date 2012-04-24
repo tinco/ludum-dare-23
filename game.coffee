@@ -15,7 +15,7 @@ class Game
         setInterval(step, @step / 10)
 
     start: () ->
-        @world = new World()
+        @world = new World(@)
         @graphics.start(@world)
         @populateMenu()
         @seedMode()

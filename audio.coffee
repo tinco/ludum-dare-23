@@ -1,19 +1,58 @@
 class Audio
+    @Sounds = 18 # Number of different piano sounds
+
     constructor: () ->
         @context = new webkitAudioContext()
         @sounds =
             rimshot:
                 url: "assets/rimshot.wav"
-                buffer: null
             kick:
                 url: "assets/kick.wav"
-                buffer: null
             snare:
                 url: "assets/snare.wav"
-                buffer: null
             hihat:
                 url: "assets/hihat.wav"
-                buffer: null
+            0:
+                url: "assets/a0.mp3"
+            1:
+                url: "assets/a2.mp3"
+            2:
+                url: "assets/a5.mp3"
+            3:
+                url: "assets/b0.mp3"
+            4:
+                url: "assets/b2.mp3"
+            5:
+                url: "assets/b5.mp3"
+            6:
+                url: "assets/d2.mp3"
+            7:
+                url: "assets/d3.mp3"
+            8:
+                url: "assets/d5.mp3"
+            9:
+                url: "assets/d6.mp3"
+            10:
+                url: "assets/e0.mp3"
+            11:
+                url: "assets/e2.mp3"
+            12:
+                url: "assets/e3.mp3"
+            13:
+                url: "assets/e5.mp3"
+            14:
+                url: "assets/e6.mp3"
+            15:
+                url: "assets/f-0.mp3"
+            16:
+                url: "assets/f-2.mp3"
+            17:
+                url: "assets/f-5.mp3"
+        @compressor = @context.createDynamicsCompressor()
+        @compressor.connect(@context.destination)
+        @gain = @context.createGainNode()
+        @gain.gain.value = 0.5
+        @gain.connect(@compressor)
         @loadSounds()
 
     loadSounds: () ->
@@ -39,7 +78,9 @@ class Audio
     playSound: (name, time) ->
         @source = @context.createBufferSource()
         @source.buffer = @sounds[name].buffer
-        @source.connect(@context.destination)
+        
+        @source.connect(@gain)
+        
         @source.noteOn(time)
 
     beat: () ->
