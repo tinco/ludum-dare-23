@@ -18,18 +18,29 @@ class Game
         @world = new World()
         @graphics.start(@world)
         @populateMenu()
-        @seedMode()
+        @tutorialMode()
         @loop()
+
+    hideAll: () ->
+        $('#tileMenu').hide()
+        $('#score').hide()
+        $('#finish').hide()
+        $('#tutorial').hide()
+
+    tutorialMode: () ->
+        @hideAll()
+        $('#tutorial').show()
+        @keyboard.tutorialContext()
 
     gameMode: () ->
         @savedState = @world.saveState()
-        $('#tileMenu').hide()
+        @hideAll()
         $('#score').show()
         @keyboard.gameContext()
         @pause = false
 
     seedMode:() ->
-        $('#score').hide()
+        @hideAll()
         $('#tileMenu').show()
         @keyboard.menuContext()
 
