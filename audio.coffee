@@ -51,7 +51,7 @@ class Audio
         @compressor = @context.createDynamicsCompressor()
         @compressor.connect(@context.destination)
         @gain = @context.createGainNode()
-        @gain.gain.value = 0.5
+        @gain.gain.value = 0.2
         @gain.connect(@compressor)
         @loadSounds()
 
