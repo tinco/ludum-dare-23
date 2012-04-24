@@ -115,3 +115,7 @@ class Game
             @world.finished = false
         if !@pause
             @world.step()
+
+$ ->
+    window.game = new Game()
+    game.start()
