@@ -6,7 +6,8 @@ class World
     @SIZE = @ANGLE * @RADIUS
     @CENTER = new THREE.Vector3(0,0,0)
 
-    constructor: () ->
+    constructor: (game) ->
+        @game = game
         @createMesh()
         @initialize()
         @alive = []
@@ -49,6 +50,7 @@ class World
                 @changeTile(r,c, Cell.Water)
 
     step: () ->
+        oldAlive = @alive.length
         @alive = []
         for row in @world
             for cell in row
@@ -61,6 +63,10 @@ class World
                     @alive.push cell
         @finished = @alive.length == 0
         @maxAlive = @alive.length if @alive.length > @maxAlive
+        diff = Math.abs(oldAlive - @alive.length)
+        sounds = Math.ceil(diff/10)
+        for i in [0..sounds]
+            @game.audio.playSound(Math.floor(Math.random() * Audio.Sounds).toString(),0)
 
     changeTile: (r, c, kind) ->
         cell = @world[r][c]
