@@ -27,6 +27,7 @@ class Keyboard
         key '5','menu', => @game.selectTile(4)
 
         key 'c','menu', => @game.world.reset()
+        key 'h', => @game.toggleHelp()
 
         key 'w', => @graphics.camera.moveUp()
         key 'a', => @graphics.camera.moveLeft()

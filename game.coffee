@@ -58,6 +58,9 @@ class Game
         $('#finish').hide()
         @seedMode()
         @world.loadState @savedState
+        
+    toggleHelp: () ->
+        $('#help').toggle()
 
     gameStep: () ->
         timeAtThisFrame = new Date().getTime()
