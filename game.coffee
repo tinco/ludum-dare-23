@@ -9,6 +9,7 @@ class Game
         @fps = 30
         @step = 1000 # ms
         @pause = true
+        @placed = 0
 
     loop: () ->
         step = => @gameStep()
@@ -18,18 +19,34 @@ class Game
         @world = new World(@)
         @graphics.start(@world)
         @populateMenu()
-        @seedMode()
+        @tutorialMode()
         @loop()
 
-    gameMode: () ->
-        @savedState = @world.saveState()
+    hideAll: () ->
         $('#tileMenu').hide()
+        $('#score').hide()
+        $('#finish').hide()
+        $('#tutorial').hide()
+
+    tutorialMode: () ->
+        @hideAll()
+        $('#tutorial').show()
+        @keyboard.tutorialContext()
+
+    gameMode: () ->
+        @placed = 0
+        @savedState = @world.saveState()
+        for row in @savedState
+            for cell in row
+                @placed += 1 if cell
+
+        @hideAll()
         $('#score').show()
         @keyboard.gameContext()
         @pause = false
 
     seedMode:() ->
-        $('#score').hide()
+        @hideAll()
         $('#tileMenu').show()
         @keyboard.menuContext()
 
@@ -60,7 +77,9 @@ class Game
         score = $('#score')
         score.find('.alive').text(@world.maxAlive)
         score.find('.age').text(@world.maxAge)
-        score.find('.total').text(@world.maxAlive * @world.maxAge)
+        score.find('.tiles').text(@placed)
+        @score = Math.round @world.maxAlive * @world.maxAge / (Math.sqrt(@placed)) || 0
+        score.find('.total').text(@score)
 
     populateMenu: () ->
         for kind, name of Cell.Kinds

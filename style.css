@@ -63,3 +63,13 @@ h1 {
     display: inline-block;
     width: 20em;
 }
+
+#tutorial {
+    padding: 3em;
+    border: 1px solid white;
+    background-color: black;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40em;
+    display: block;
+}

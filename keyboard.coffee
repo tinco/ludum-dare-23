@@ -12,6 +12,8 @@ class Keyboard
         key 'r','game', => @game.restart()
         key 'f','game', => @game.finish()
 
+        key 'enter','tutorial', => @game.seedMode()
+
         key 'up','menu', => @game.onUp?()
         key 'down','menu', => @game.onDown?()
         key 'left','menu', => @game.onLeft?()
@@ -33,3 +35,4 @@ class Keyboard
 
      gameContext: -> key.setScope('game')
      menuContext: -> key.setScope('menu')
+     tutorialContext: -> key.setScope('tutorial')
