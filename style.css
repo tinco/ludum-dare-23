@@ -92,3 +92,12 @@ h1 {
     width: 40em;
     display: block;
 }
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 1em;
+    font-size: .8em;
+    text-align: center;
+    width: 100%;
+}
