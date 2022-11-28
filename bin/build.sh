@@ -1,1 +1,1 @@
-coffee -o assets/ -c *.coffee
+coffee -b -o assets/ -c *.coffee
