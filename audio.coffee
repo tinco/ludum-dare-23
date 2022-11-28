@@ -2,7 +2,7 @@ class Audio
     @Sounds = 18 # Number of different piano sounds
 
     constructor: () ->
-        @context = new webkitAudioContext()
+        @context = new AudioContext()
         @sounds =
             rimshot:
                 url: "assets/rimshot.wav"
@@ -50,7 +50,7 @@ class Audio
                 url: "assets/f-5.mp3"
         @compressor = @context.createDynamicsCompressor()
         @compressor.connect(@context.destination)
-        @gain = @context.createGainNode()
+        @gain = @context.createGain()
         @gain.gain.value = 0.2
         @gain.connect(@compressor)
         @loadSounds()
@@ -81,7 +81,7 @@ class Audio
         
         @source.connect(@gain)
         
-        @source.noteOn(time)
+        @source.start(time)
 
     beat: () ->
         startTime = @context.currentTime + 0.100
